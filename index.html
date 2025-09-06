@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Despierta el interés y autonomía en el aula</title>
+<style>
+  :root{
+    --bg:#eef7f5;
+    --card:#ffffff;
+    --accent1:#5aa897; /* verde suave */
+    --accent2:#4aa3d8; /* azul suave */
+    --text:#073642;
+    --muted:#51656b;
+    --success:#2e8b57;
+    --error:#c23b3b;
+    --radius:14px;
+    --big:18px;
+  }
+  html,body{height:100%;margin:0;font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background:linear-gradient(180deg,var(--bg),#e9f3f7); color:var(--text);}
+  .container{max-width:980px;margin:28px auto;padding:22px;}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:0 6px 18px rgba(6,30,40,0.06);padding:20px;}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;}
+  h1{font-size:24px;margin:0;color:var(--accent2);}
+  .subtitle{color:var(--muted);font-size:14px;margin-top:6px;}
+  .start-screen{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start;}
+  label{display:block;font-weight:600;margin-bottom:6px;font-size:14px;}
+  input[type="text"]{width:100%;padding:12px;border-radius:10px;border:1px solid #d6e6e8;font-size:16px;}
+  button.large{display:inline-block;padding:14px 20px;border-radius:12px;border:0;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;font-weight:700;font-size:16px;cursor:pointer;box-shadow:0 6px 12px rgba(74,163,216,0.18);}
+  button.ghost{background:transparent;border:2px solid rgba(6,30,40,0.06);color:var(--text);padding:10px 14px;border-radius:10px;cursor:pointer;}
+  .welcome{padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(90,168,151,0.06),rgba(74,163,216,0.03));}
+  .motiv{font-size:16px;color:var(--muted);line-height:1.45;margin-top:10px;}
+  .center{display:flex;align-items:center;justify-content:center;}
+  .reading-card{margin-top:16px;padding:18px;border-radius:12px;background:linear-gradient(180deg,#ffffff, #f7fcff);border:1px solid rgba(74,163,216,0.07);}
+  .btn-block{display:flex;gap:12px;flex-wrap:wrap;}
+  .big-btn{padding:12px 18px;border-radius:12px;border:0;font-size:16px;background:var(--accent1);color:white;cursor:pointer;box-shadow:0 6px 12px rgba(90,168,151,0.15);}
+  .text-area{white-space:pre-wrap;max-height:360px;overflow:auto;padding:12px;border-radius:10px;border:1px solid #e6f3f2;background:#fbfffe;font-size:15px;color:var(--text);}
+  .quiz{margin-top:18px;}
+  .question{margin-bottom:18px;padding:14px;border-radius:12px;border:1px solid rgba(6,30,40,0.04);background:linear-gradient(180deg,#ffffff,#f8fffb);}
+  .choices{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px;}
+  .choice{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1px solid #e4eef0;background:white;cursor:pointer;font-size:15px;}
+  .choice input{transform:scale(1.1);margin-right:6px;}
+  .feedback{margin-top:10px;padding:12px;border-radius:10px;}
+  .feedback.ok{background:linear-gradient(90deg, rgba(46,139,87,0.08), rgba(74,163,216,0.03));border-left:6px solid var(--success);color:var(--success);}
+  .feedback.err{background:linear-gradient(90deg, rgba(194,59,59,0.06), rgba(74,163,216,0.02));border-left:6px solid var(--error);color:var(--error);}
+  .progress-wrap{margin-top:12px;display:flex;align-items:center;gap:12px;}
+  .bar{flex:1;height:14px;background:#e6f3f2;border-radius:12px;overflow:hidden;border:1px solid rgba(6,30,40,0.03);}
+  .bar-inner{height:100%;width:0;background:linear-gradient(90deg,var(--accent1),var(--accent2));border-radius:12px;}
+  .score{min-width:160px;text-align:right;font-weight:700;color:var(--muted);}
+  footer{margin-top:20px;padding:14px;border-radius:10px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px;}
+  .author{font-weight:700;color:var(--muted);}
+  .small{font-size:13px;color:var(--muted);}
+  /* responsive */
+  @media (max-width:880px){
+    .start-screen{grid-template-columns:1fr; }
+    header{flex-direction:column;align-items:flex-start;gap:8px;}
+  }
+  /* focus */
+  .choice:focus-within{outline:3px solid rgba(74,163,216,0.12);}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+</style>
+</head>
+<body>
+  <div class="container card" role="application" aria-labelledby="mainTitle">
+    <header>
+      <div>
+        <h1 id="mainTitle">Despierta el interés y autonomía en el aula</h1>
+        <div class="subtitle">Juego pedagógico para docentes de EBR · Rúbrica 1</div>
+      </div>
+      <div style="text-align:right">
+        <div class="small">Diseño accesible · Colores suaves · Botones grandes</div>
+      </div>
+    </header>
+
+    <!-- START SCREEN -->
+    <section id="startScreen" class="start-screen" aria-live="polite">
+      <div class="welcome">
+        <h2 style="margin:0;font-size:20px;color:var(--accent1)">¡Bienvenido/a!</h2>
+        <p class="motiv">Este juego te acompañará paso a paso para reflexionar y practicar acciones concretas que movilizan el interés, la autonomía y la reflexión de tus estudiantes.</p>
+
+        <div style="margin-top:12px;">
+          <label for="teacherName">Ingresa tu nombre (docente participante):</label>
+          <input id="teacherName" type="text" placeholder="Ej.: María Pérez" aria-label="Nombre del docente" />
+        </div>
+
+        <div style="margin-top:14px;" class="btn-block">
+          <button id="btnStart" class="large" aria-controls="welcomeArea">Iniciar</button>
+          <button id="btnHow" class="ghost" title="Instrucciones">Instrucciones</button>
+        </div>
+
+        <div id="welcomeArea" style="margin-top:12px;">
+          <div class="small">Al iniciar verás la lectura, luego una evaluación con 10 preguntas. Cada respuesta correcta suma 2 puntos. ¡Anímate a reflexionar y aprender!</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="reading-card">
+          <h3 style="margin-top:0;color:var(--accent2)">Iniciamos la aventura de exploración de la Rúbrica 1</h3>
+          <p class="small">Objetivo: Promover que los docentes se apropien y apliquen la Rúbrica 1 — enfocándonos en tres aspectos: acciones para despertar interés; proporción de estudiantes involucrados y reflexivos; y acciones para favorecer comprensión del sentido y utilidad del aprendizaje.</p>
+
+          <div style="margin-top:12px;">
+            <button id="btnSelectReading" class="big-btn" aria-controls="textContainer">Despierta el interés, reflexión y autonomía en el aula</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEXT --> 
+    <section id="textSection" style="display:none;margin-top:16px;">
+      <div class="card">
+        <h3 style="margin:0;color:var(--accent1)">Lectura</h3>
+        <div class="text-area" id="textContainer" tabindex="0" aria-live="polite" role="document" style="margin-top:12px;">
+R1-Involucra activamente a los estudiantes en el proceso de aprendizaje1
+
+Despertar el interés, autonomía y reflexión en el aula
+
+
+
+Imaginemos un aula donde los estudiantes no solo escuchan, sino que brillan con curiosidad, donde las
+
+preguntas fluyen como un río y cada idea es una semilla que germina. ¿Cómo llegar a este escenario? La
+
+respuesta está en tres pilares fundamentales de la 1° rúbrica: despertar el interés, fomentar la autonomía, y
+
+promover la reflexión. Estos no son simples caprichos pedagógicos, sino principios respaldados por la ciencia
+
+y la experiencia.
+
+Despertar el interés no es un lujo, sino una necesidad biológica y cognitiva. Estudios demuestran que cuando
+
+algo captura nuestra atención, el cerebro libera dopamina, un neurotransmisor vinculado al placer y la
+
+motivación, que nos impulsa a explorar y aprender. Además, la amígdala —centro emocional del cerebro—
+
+trabaja en conjunto con el hipocampo para consolidar recuerdos, haciendo que lo aprendido con interés
+
+perdure. Como decía John Locke, el verdadero rol del docente no es saturar de información, sino encender en
+
+los estudiantes el amor por el conocimiento. Sin embargo, muchos educadores caen en la trampa de cumplir
+
+con un plan de clases rígido, olvidando que sin interés genuino, el aprendizaje se convierte en un mero trámite
+
+mecánico.
+
+Opinar y decidir con autonomía es el segundo pilar clave. Permitir que los estudiantes opinen, decidan y
+
+exploren no es un acto de rebeldía pedagógica, sino una estrategia respaldada por Ausubel y Piaget. Cuando
+
+los alumnos tienen libertad para pensar y proponer, construyen conocimiento de manera significativa,
+
+vinculando lo nuevo con lo ya conocido. La autonomía fomenta la creatividad y la perseverancia, esenciales
+
+para enfrentar retos. No obstante, algunos docentes se resisten, argumentando que perderán el control del
+
+tiempo o que las sesiones deben seguir un guion inflexible. ¿Cómo esperar que los estudiantes se involucren
+
+si incluso las conclusiones ya están predeterminadas?
+
+Finalmente, la reflexión sobre lo aprendido transforma la información en comprensión profunda al
+
+encontrarle utilidad y sentido. Esto supone no solo que tengan claro qué es lo que van a aprender y cómo, sino
+
+que tengan oportunidad de conversarlo. Rebeca Anijovich y Perrenoud destacan que cuando los estudiantes
+
+conocen los objetivos y criterios de evaluación, pueden autorregular su proceso, identificar fortalezas y
+
+debilidades, y enfocar sus esfuerzos. Sin embargo, en un sistema obsesionado por enseñar con sesiones de
+
+45 o 90 minutos, muchos docentes sienten que no hay espacio para estas conversaciones, reduciendo el
+
+aprendizaje a una lista de tareas mecánicas.
+
+En conclusión, enseñar no es transmitir, sino inspirar. Despertar el interés, dar autonomía y promover la
+
+reflexión para comprender el sentido no son opciones, sino condiciones para un aprendizaje verdadero. Como
+
+educadores, debemos preguntarnos: ¿queremos estudiantes pasivos o mentes curiosas y críticas? El cambio
+
+comienza en nuestras aulas. ¡Abramos espacio para el asombro, la voz y la reflexión de nuestros alumnos!
+
+Ver video: https://vt.tiktok.com/ZSAWsSwKX/
+
+Dr. Jorge Espinoza Fernández
+        </div>
+
+        <div style="margin-top:12px;display:flex;gap:12px;">
+          <button id="btnBeginEval" class="large" aria-controls="quizArea">Comenzar evaluación</button>
+          <button id="btnBack" class="ghost">Volver</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quizArea" style="display:none;" aria-live="polite">
+      <div class="card quiz" id="quizCard">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <div>
+            <div style="font-weight:800;font-size:18px;" id="greeting">Hola</div>
+            <div class="small" id="instruction">Lee cada caso y selecciona la alternativa que mejor responda.</div>
+          </div>
+          <div style="text-align:right">
+            <div class="small">Puntaje: <span id="score">0</span></div>
+            <div class="small">Pregunta <span id="qIndex">0</span>/10</div>
+          </div>
+        </div>
+
+        <div class="progress-wrap" aria-hidden="false" style="margin-top:12px;">
+          <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="bar-inner" id="barInner" style="width:0%"></div>
+          </div>
+          <div class="score" id="pct">0%</div>
+        </div>
+
+        <div id="questionContainer" style="margin-top:16px;"></div>
+
+        <div style="margin-top:12px;display:flex;gap:12px;justify-content:flex-end;">
+          <button id="btnNext" class="large" disabled>Enviar respuesta</button>
+          <button id="btnQuit" class="ghost">Reiniciar juego</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULT -->
+    <section id="resultArea" style="display:none;margin-top:16px;">
+      <div class="card" id="resultCard">
+        <h2 style="margin:0;color:var(--accent2)">Resultados</h2>
+        <div style="margin-top:12px;">
+          <p id="finalMsg" style="font-size:16px;color:var(--muted)"></p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:220px;padding:12px;border-radius:10px;background:#fbfffe;border:1px solid #e6f7f3;">
+              <div style="font-weight:700;font-size:20px" id="finalScore">0 pts</div>
+              <div class="small">Puntaje total (2 pts por pregunta)</div>
+            </div>
+            <div style="flex:1;min-width:220px;padding:12px;border-radius:10px;background:#fff9fb;border:1px solid #f7e7e7;">
+              <div style="font-weight:700;font-size:20px" id="finalPct">0%</div>
+              <div class="small">Porcentaje de aciertos</div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <h3 style="margin-bottom:6px;color:var(--accent1)">Retroalimentación pedagógica personalizada</h3>
+            <div id="detailedFeedback" class="small" style="line-height:1.5"></div>
+          </div>
+
+          <div style="margin-top:14px;display:flex;gap:10px;">
+            <button id="btnRestart" class="large">Volver al inicio</button>
+            <button id="btnClose" class="ghost">Cerrar juego</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="author">Autor: Dr. Jorge Espinoza Fernández</div>
+      <div class="small">Juego educativo • Diseño: accesible • Derechos reservados</div>
+    </footer>
+  </div>
+
+<script>
+/*
+  Juego: Despierta el interés y autonomía en el aula
+  Todo en un solo archivo.
+*/
+
+(function(){
+  // DOM elements
+  const btnStart = document.getElementById('btnStart');
+  const teacherNameInput = document.getElementById('teacherName');
+  const btnSelectReading = document.getElementById('btnSelectReading');
+  const textSection = document.getElementById('textSection');
+  const startScreen = document.getElementById('startScreen');
+  const btnBeginEval = document.getElementById('btnBeginEval');
+  const btnBack = document.getElementById('btnBack');
+  const quizArea = document.getElementById('quizArea');
+  const questionContainer = document.getElementById('questionContainer');
+  const qIndexEl = document.getElementById('qIndex');
+  const scoreEl = document.getElementById('score');
+  const pctEl = document.getElementById('pct');
+  const barInner = document.getElementById('barInner');
+  const btnNext = document.getElementById('btnNext');
+  const btnQuit = document.getElementById('btnQuit');
+  const greeting = document.getElementById('greeting');
+  const resultArea = document.getElementById('resultArea');
+  const finalScore = document.getElementById('finalScore');
+  const finalPct = document.getElementById('finalPct');
+  const finalMsg = document.getElementById('finalMsg');
+  const detailedFeedback = document.getElementById('detailedFeedback');
+  const btnRestart = document.getElementById('btnRestart');
+  const btnClose = document.getElementById('btnClose');
+  const btnHow = document.getElementById('btnHow');
+
+  // state
+  let teacherName = '';
+  let currentQ = 0;
+  let score = 0;
+  let answered = false;
+
+  // Questions: 10 preguntas de alta demanda cognitiva, basadas en el texto.
+  // Cada pregunta: {q, choices: [..], correct: index, feedbackCorrect, feedbackWrong}
+  const questions = [
+    {
+      q: `Caso: En una sesión de ciencias, la docente inicia con una larga explicación del contenido y la mayoría de estudiantes muestran poco interés. Según la lectura, ¿qué cambio estratégico priorizarías para despertar el interés y por qué?`,
+      choices:[
+        `Mantener la explicación larga pero pedir tarea más adelante.`,
+        `Iniciar con una pregunta estimulante o un problema real que conecte con la experiencia de los estudiantes.`,
+        `Aumentar la evaluación escrita para que presten atención.`,
+        `Reducir el tiempo de la clase a la mitad para apurar el contenido.`
+      ],
+      correct:1,
+      feedbackCorrect:`Excelente. Iniciar con una pregunta o problema real activa la curiosidad y vincula el aprendizaje con la experiencia; eso facilita la liberación de motivación y memoria según la lectura.`,
+      feedbackWrong:`Recuerda: la lectura enfatiza encender la curiosidad mediante problemas o preguntas significativas. Las medidas punitivas o reducir tiempo no fomentan interés genuino. Prueba iniciar con una situación problemática vinculada a los estudiantes.`
+    },
+    {
+      q: `Caso: Un docente teme perder control del tiempo si concede mayor autonomía. ¿Qué alternativa, coherente con la lectura, permitiría autonomía sin sacrificar la organización de la sesión?`,
+      choices:[
+        `Permitir que los estudiantes trabajen siempre de forma independiente sin estructura.`,
+        `Ofrecer tareas con opciones guiadas y criterios claros de evaluación para que los estudiantes tomen decisiones dentro de límites establecidos.`,
+        `Eliminar las instrucciones y ver qué surge.`,
+        `Castigar la autonomía con más tareas si no cumplen el tiempo.`
+      ],
+      correct:1,
+      feedbackCorrect:`Correcto. Dar opciones guiadas y criterios claros ayuda a la autonomía medible y a la autorregulación, tal como señala la lectura sobre conocer objetivos y criterios.`,
+      feedbackWrong:`La lectura sugiere estructurar la autonomía: ofrecer opciones y criterios claros. La autonomía no es anarquía; es libertad con límites y acompañamiento.`
+    },
+    {
+      q: `Caso: Tras explicar un tema, la docente quiere promover reflexión profunda. ¿Cuál práctica, apoyada en la lectura, favorecería más la comprensión del sentido de lo aprendido?`,
+      choices:[
+        `Pedir que memoricen definiciones para la evaluación.`,
+        `Solicitar que relacionen lo aprendido con situaciones cotidianas y expliquen su utilidad.`,
+        `Pasar inmediatamente a la siguiente unidad sin tiempo de cierre.`,
+        `Aumentar ejercicios mecánicos para asegurar práctica.`
+      ],
+      correct:1,
+      feedbackCorrect:`Muy bien. Vincular el aprendizaje con situaciones reales y su utilidad promueve reflexión y comprensión profunda, como indica la lectura.`,
+      feedbackWrong:`La lectura enfatiza la reflexión sobre el sentido y la utilidad. Actividades que conectan lo aprendido con la vida real y que requieren explicarlo profundizan la comprensión.`
+    },
+    {
+      q: `Caso: En una observación, la mayoría de estudiantes participan pasivamente. ¿Qué indicador concreto podrías usar para evaluar proporción de estudiantes realmente involucrados y reflexivos?`,
+      choices:[
+        `Solo contar los estudiantes que levantan la mano.`,
+        `Medir el % de estudiantes que generan una pregunta o propuesta propia y la calidad de esa propuesta según criterios establecidos.`,
+        `Evaluar únicamente la asistencia a la sesión.`,
+        `Promediar las calificaciones finales sin observar participación.`
+      ],
+      correct:1,
+      feedbackCorrect:`Exacto. La lectura sugiere que criterios y objetivos claros permiten autorregulación; medir la generación de preguntas/propuestas da una medida real de involucramiento.`,
+      feedbackWrong:`Levantar la mano o la asistencia no capturan reflexión. Es más útil usar evidencias como preguntas, propuestas o producciones valoradas con criterios.`
+    },
+    {
+      q: `Caso: Diseñas una actividad para fomentar interés y autonomía. ¿Cuál combinación refleja mejor los tres pilares de la rúbrica descritos en la lectura?`,
+      choices:[
+        `Explicar todo, dar tarea individual y evaluar copia textual.`,
+        `Plantear un problema real, ofrecer roles o rutas de trabajo y finalizar con una sesión de reflexión guiada sobre lo aprendido.`,
+        `Hacer largas exposiciones, sin interacción, y terminar con una prueba sorpresa.`,
+        `Pedir un resumen sin discusión en clase.`
+      ],
+      correct:1,
+      feedbackCorrect:`Muy bien: problema real + opciones de trabajo + reflexión final articula interés, autonomía y reflexión, que son los pilares del texto.`,
+      feedbackWrong:`La lectura plantea tres pilares que funcionan mejor integrados: inicio motivador, oportunidades para decidir/trabajar autónomamente y reflexión final.`
+    },
+    {
+      q: `Caso: Un docente aplica actividades autónomas sin informar criterios de evaluación; muchos estudiantes no saben qué se espera. Según la lectura, ¿qué efecto tiene esto y qué corregirías?`,
+      choices:[
+        `No tiene efecto; la autonomía siempre funciona por sí sola.`,
+        `Provoca confusión y baja autorregulación; corregiría comunicando objetivos y criterios antes de iniciar la autonomía.`,
+        `Incrementa automáticamente la creatividad sin necesidad de orientaciones.`,
+        `Sustituiría la autonomía por clases magistrales.`
+      ],
+      correct:1,
+      feedbackCorrect:`Correcto. La lectura indica que conocer los objetivos y criterios favorece la autorregulación y la reflexión; sin eso, la autonomía puede fracasar.`,
+      feedbackWrong:`La autonomía necesita andamiaje. Comunicar objetivos y criterios guía la autorregulación y mejora los resultados, según el texto.`
+    },
+    {
+      q: `Caso: Debes evaluar si tu práctica "despierta interés". ¿Cuál evidencia de aula sería la más alineada con la lectura para afirmar que sí lo haces?`,
+      choices:[
+        `Los estudiantes permanecen en silencio todo el tiempo.`,
+        `Los estudiantes formulan preguntas relevantes, se implican en propuestas y recuerdan conexiones con experiencias previas.`,
+        `Las notas de los estudiantes en exámenes altos pero sin vínculo con actividades.`,
+        `Que el docente haya completado la planificación sin ajuste.`
+      ],
+      correct:1,
+      feedbackCorrect:`Bien. Formulación de preguntas relevantes y conexiones significativas son señales de interés y aprendizaje duradero mencionadas en la lectura.`,
+      feedbackWrong:`El silencio o buenas notas aisladas no garantizan interés auténtico. Busca evidencias de curiosidad, preguntas y conexiones significativas.`
+    },
+    {
+      q: `Caso: Tienes 45 minutos de clase. ¿Cómo reconciliarías la necesidad de reflexión con la limitación de tiempo según las ideas del texto?`,
+      choices:[
+        `Sacar la reflexión porque 45 minutos no alcanzan.`,
+        `Diseñar micro-momentos de reflexión (5-10 min) y usar tareas previas/postclase para ampliar la reflexión con criterios claros.`,
+        `Aumentar solo la explicación para "ganar tiempo".`,
+        `Dejar la reflexión para un examen final.`
+      ],
+      correct:1,
+      feedbackCorrect:`Correcto. La lectura reconoce limitaciones de tiempo y propone integrar momentos cortos de reflexión y continuar la reflexión fuera del aula con apoyo y criterios.`,
+      feedbackWrong:`La lectura no sugiere eliminar la reflexión; propone integrarla de forma planificada, incluso en micro-momentos y con actividades previas/postclase.`
+    },
+    {
+      q: `Caso: Quieres que tus estudiantes "opinen y decidan". ¿Qué rol docente descrito en la lectura es más eficaz al promover autonomía?`,
+      choices:[
+        `Rol controlador que decide todas las actividades.`,
+        `Rol de guía que plantea opciones, facilita recursos y orienta la evaluación, acompañando el proceso.`,
+        `Rol inexistente; no intervenir en nada.`,
+        `Rol punitivo que obliga a seguir instrucciones.`
+      ],
+      correct:1,
+      feedbackCorrect:`Muy bien. La lectura promueve un rol docente que guía, ofrece andamiaje y criterios, permitiendo a los alumnos construir conocimiento con autonomía.`,
+      feedbackWrong:`La autonomía efectiva requiere acompañamiento y andamiaje; no es simplemente ausencia de rol docente ni control estricto.`
+    },
+    {
+      q: `Caso: Después de una actividad diseñada para despertar interés, observas que algunos alumnos muestran interés y otros no. Según la lectura, ¿qué estrategia de mejora propondrías para aumentar la proporción de involucrados?`,
+      choices:[
+        `Hacer la actividad más difícil para todos.`,
+        `Diferenciar tareas ofreciendo rutas con distintos niveles de desafío y relevancia para distintos intereses, y comunicar criterios de evaluación.`,
+        `Eliminar la actividad y repetir la exposición magistral.`,
+        `Asignar tareas adicionales a los que no participan.`
+      ],
+      correct:1,
+      feedbackCorrect:`Correcto. Diferenciar y ofrecer rutas de trabajo vinculadas a intereses, con criterios claros, incrementa la participación y la reflexión, tal como indica el texto.`,
+      feedbackWrong:`La lectura sugiere ajustar diseño y ofrecer opciones relevantes; castigos o más exposición no abordan la diversidad de intereses.`
+    }
+  ];
+
+  // helpers
+  function sanitizeName(name){
+    return String(name||'').trim();
+  }
+
+  function showStart(){
+    startScreen.style.display = '';
+    textSection.style.display = 'none';
+    quizArea.style.display = 'none';
+    resultArea.style.display = 'none';
+    currentQ = 0; score = 0; answered = false;
+    updateScore();
+    updateProgress();
+    teacherNameInput.focus();
+  }
+
+  function showText(){
+    startScreen.style.display = 'none';
+    textSection.style.display = '';
+    quizArea.style.display = 'none';
+    resultArea.style.display = 'none';
+    document.getElementById('textContainer').scrollTop = 0;
+  }
+
+  function beginEvaluation(){
+    teacherName = sanitizeName(teacherNameInput.value) || 'Docente';
+    greeting.textContent = `Hola ${teacherName}, vamos con la evaluación`;
+    startScreen.style.display = 'none';
+    textSection.style.display = 'none';
+    quizArea.style.display = '';
+    currentQ = 0; score = 0;
+    renderQuestion();
+    updateScore();
+    updateProgress();
+  }
+
+  function renderQuestion(){
+    answered = false;
+    btnNext.disabled = true;
+    const obj = questions[currentQ];
+    qIndexEl.textContent = (currentQ+1).toString();
+    // build question html
+    let html = `<div class="question" id="qCard" aria-live="polite"><strong>Situación ${currentQ+1}:</strong><div style="margin-top:8px">${obj.q}</div>`;
+    html += `<div class="choices" role="radiogroup" aria-labelledby="question${currentQ}">`;
+    obj.choices.forEach((c,i)=>{
+      // each choice is a label with radio inside
+      html += `<label class="choice" tabindex="0"><input type="radio" name="choice" value="${i}" aria-label="Opción ${String.fromCharCode(65+i)}"> <span>${String.fromCharCode(65+i)}. ${c}</span></label>`;
+    });
+    html += `</div><div id="fb" style="margin-top:8px;"></div></div>`;
+    questionContainer.innerHTML = html;
+
+    // add event listeners for choices
+    const choiceEls = questionContainer.querySelectorAll('.choice');
+    choiceEls.forEach(lbl=>{
+      lbl.addEventListener('click',()=>{
+        const input = lbl.querySelector('input[type="radio"]');
+        input.checked = true;
+        btnNext.disabled = false;
+      });
+      // keyboard: Enter selects
+      lbl.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          lbl.click();
+        }
+      });
+    });
+
+    // update progress text
+    updateScore();
+    updateProgress();
+  }
+
+  function updateScore(){
+    scoreEl.textContent = score.toString();
+  }
+
+  function updateProgress(){
+    const pct = Math.round((score / (questions.length * 2)) * 100);
+    pctEl.textContent = pct + '%';
+    barInner.style.width = pct + '%';
+    barInner.setAttribute('aria-valuenow', pct);
+  }
+
+  function provideFeedback(isCorrect, obj){
+    const fbDiv = document.getElementById('fb');
+    if(isCorrect){
+      fbDiv.innerHTML = `<div class="feedback ok" role="status"><strong>Correcto.</strong> ${obj.feedbackCorrect}</div>`;
+    } else {
+      fbDiv.innerHTML = `<div class="feedback err" role="status"><strong>Respuesta no óptima.</strong> ${obj.feedbackWrong}</div>`;
+    }
+  }
+
+  function handleNext(){
+    if(answered) return;
+    const selected = questionContainer.querySelector('input[name="choice"]:checked');
+    if(!selected){
+      // should not happen because button disabled if none
+      alert('Selecciona una opción para enviar tu respuesta.');
+      return;
+    }
+    const choiceIndex = Number(selected.value);
+    const obj = questions[currentQ];
+    const isCorrect = choiceIndex === obj.correct;
+    answered = true;
+
+    if(isCorrect){
+      score += 2; // 2 points per correct
+    }
+
+    provideFeedback(isCorrect,obj);
+    updateScore();
+    updateProgress();
+
+    // change button to "Siguiente pregunta" after answering
+    btnNext.textContent = currentQ < questions.length - 1 ? 'Siguiente pregunta' : 'Ver resultados';
+    btnNext.disabled = false;
+
+    // disable choices to prevent changes
+    const inputs = questionContainer.querySelectorAll('input[name="choice"]');
+    inputs.forEach(i=>i.disabled = true);
+
+    // after click, on next press go to next question or results
+    btnNext.onclick = () => {
+      if(!answered){
+        handleNext(); return;
+      }
+      // if still in answered state and button text is next
+      if(currentQ < questions.length - 1){
+        currentQ++;
+        btnNext.textContent = 'Enviar respuesta';
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    };
+  }
+
+  function showResults(){
+    quizArea.style.display = 'none';
+    resultArea.style.display = '';
+    finalScore.textContent = `${score} pts`;
+    const pct = Math.round((score / (questions.length * 2)) * 100);
+    finalPct.textContent = `${pct}%`;
+    finalMsg.textContent = `¡Buen trabajo, ${teacherName}! Aquí está un resumen personalizado de tu desempeño.`;
+    // Construct pedagogical feedback based on score and distribution
+    const feedbacks = generateFinalFeedback(score, pct);
+    detailedFeedback.innerHTML = feedbacks;
+  }
+
+  function generateFinalFeedback(score, pct){
+    // Provide precise suggestions for the three aspects:
+    // 1. Acciones del docente para promover el interés
+    // 2. Proporción de estudiantes involucrados y autonomía
+    // 3. Acciones para favorecer comprensión del sentido y utilidad
+    // We'll tailor messages by performance bands.
+    let band;
+    if(pct >= 85) band = 'alto';
+    else if(pct >= 60) band = 'medio';
+    else band = 'bajo';
+
+    let intro = `<p><strong>Resumen rápido:</strong> Puntaje ${score} / ${questions.length*2} — ${pct}% (${band.toUpperCase()}).</p>`;
+
+    let part1 = `<h4 style="margin-bottom:6px">1) Acciones para promover el interés</h4>`;
+    if(band==='alto'){
+      part1 += `<p>Fortaleza: Sueles comenzar o diseñar actividades que conectan con experiencias reales y despiertan curiosidad. Sigue variando los iniciadores (problemas, preguntas, dilemas) y registra qué tipo de inicio genera más participación.</p>`;
+    } else if(band==='medio'){
+      part1 += `<p>Mejora: Integra habitualmente una "entrada" que capture atención (una pregunta, un caso real o una demostración rápida). Observa cuál de estas opciones genera más preguntas de tus estudiantes y repítela con variaciones.</p>`;
+    } else {
+      part1 += `<p>Sugerencia: Incorpora en cada clase un inicio breve (2-5 minutos) con una pregunta provocadora o un caso que tenga conexión con la realidad del estudiantado. Haz un pequeño registro de reacciones para ajustar tu diseño.</p>`;
+    }
+
+    let part2 = `<h4 style="margin-bottom:6px">2) Proporción de estudiantes involucrados y autonomía</h4>`;
+    if(band==='alto'){
+      part2 += `<p>Fortaleza: Probablemente diseñas opciones y roles que permiten que muchas estudiantes opinen y propongan. Mantén registros de evidencias (preguntas generadas, propuestas, productos) y promueve la autorregulación con criterios claros.</p>`;
+    } else if(band==='medio'){
+      part2 += `<p>Mejora: Diseña rutas de trabajo diferenciadas y comunica criterios al inicio para que más estudiantes se sientan habilitados a participar. Introduce micro-evidencias (quién preguntó, quién propuso solución) para monitorear la proporción involucrada.</p>`;
+    } else {
+      part2 += `<p>Sugerencia: Comienza por ofrecer dos rutas en una actividad (una guiada y otra abierta) y pide que cada estudiante elija una. Comunica qué evidencias permitirán demostrar su aprendizaje. Esto facilita aumentar la proporción de involucrados.</p>`;
+    }
+
+    let part3 = `<h4 style="margin-bottom:6px">3) Acciones para favorecer comprensión del sentido y utilidad</h4>`;
+    if(band==='alto'){
+      part3 += `<p>Fortaleza: Muy bien en promover reflexión sobre la utilidad. Continúa añadiendo preguntas de cierre que conecten lo aprendido con escenarios concretos y con criterios de evaluación compartidos para fomentar autorregulación.</p>`;
+    } else if(band==='medio'){
+      part3 += `<p>Mejora: Implementa cierres de sesión breves donde estudiantes expliquen en dos frases la utilidad de lo aprendido. Complementa con tareas que pidan aplicar el contenido en contextos próximos a su vida.</p>`;
+    } else {
+      part3 += `<p>Sugerencia: Al finalizar cada sesión, reserva 5-8 minutos para que los estudiantes expresen (por escrito o verbalmente) para qué les sirve lo trabajado. Usa esas respuestas para ajustar próximas actividades y mostrar relevancia.</p>`;
+    }
+
+    let closure = `<p style="margin-top:8px"><strong>Recomendación final:</strong> Integra pequeñas prácticas (entradas motivadoras, rutas de trabajo con criterios, cierres reflexivos) y registra evidencias para evaluar el impacto en el interés y la autonomía. Si deseas, puedes volver a jugar y enfocarte en las preguntas que tuviste incorrectas para afinar aspectos concretos.</p>`;
+
+    return intro + part1 + part2 + part3 + closure;
+  }
+
+  // event listeners
+  btnStart.addEventListener('click', ()=>{
+    // if name empty, accept default "Docente" but inform
+    if(!sanitizeName(teacherNameInput.value)){
+      const ok = confirm('No ingresaste un nombre. ¿Deseas continuar como "Docente"?');
+      if(!ok) { teacherNameInput.focus(); return; }
+    }
+    // focus on reading selection (not automatically begin)
+    teacherName = sanitizeName(teacherNameInput.value) || 'Docente';
+    showText();
+  });
+
+  btnHow.addEventListener('click', ()=>{
+    alert('Instrucciones:\n1) Ingresa tu nombre y presiona Iniciar.\n2) Haz clic en el botón de lectura para ver el texto completo.\n3) Comienza la evaluación con 10 preguntas basadas en casos reales. Cada acierto suma 2 puntos.\n4) Al responder recibirás retroalimentación inmediata. Al final obtendrás retroalimentación pedagógica personalizada.\n\n¡Buena suerte!');
+  });
+
+  btnSelectReading.addEventListener('click', ()=>{
+    showText();
+    // scroll focus to reading container
+    setTimeout(()=>document.getElementById('textContainer').focus(),120);
+  });
+
+  btnBeginEval.addEventListener('click', ()=>{
+    // Use name if not set; if startScreen was skipped assign from input
+    teacherName = sanitizeName(teacherNameInput.value) || 'Docente';
+    beginEvaluation();
+  });
+
+  btnBack.addEventListener('click', ()=>{
+    showStart();
+  });
+
+  // Next/Submit button behavior: initially send, after answer becomes next
+  btnNext.addEventListener('click', ()=>{
+    // If button says 'Enviar respuesta' we evaluate; else we call the onclick (set dynamically)
+    if(btnNext.textContent === 'Enviar respuesta'){
+      handleNext();
+    } else {
+      // This case will be handled by dynamic onclick; but as fallback:
+      if(currentQ < questions.length - 1){
+        currentQ++;
+        btnNext.textContent = 'Enviar respuesta';
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+  });
+
+  btnQuit.addEventListener('click', ()=>{
+    if(confirm('¿Deseas reiniciar el juego y volver al inicio?')) showStart();
+  });
+
+  btnRestart.addEventListener('click', ()=>{
+    showStart();
+  });
+
+  btnClose.addEventListener('click', ()=>{
+    if(confirm('¿Cerrar el juego? Puedes volver a abrir el archivo cuando quieras.')) {
+      // take user to a simple close state
+      document.body.innerHTML = '<div style="font-family:inherit;padding:40px;text-align:center;"><h2>Juego cerrado</h2><p>Gracias por participar. Puedes cerrar esta pestaña o volver al archivo para jugar de nuevo.</p></div>';
+    }
+  });
+
+  // initialize
+  showStart();
+
+  // Accessibility: allow Enter on teacherName to start
+  teacherNameInput.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter') btnStart.click();
+  });
+
+  // ensure large focusable targets
+  document.addEventListener('keyup', (e)=>{
+    if(e.key === 'Escape'){
+      // quick escape to restart
+      if(confirm('¿Deseas volver al inicio?')) showStart();
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
