@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Despierta el Interés y Autonomía en el Aula</title>
+    <style>
+        /* Estilos generales */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e6f7ff 0%, #f0fff0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        h1 {
+            color: #2c7da0;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        h2 {
+            color: #2c7da0;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        p {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        
+        .highlight {
+            background-color: #e6f7ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #2c7da0;
+        }
+        
+        /* Botones */
+        .btn {
+            background-color: #2c7da0;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            display: inline-block;
+            width: 80%;
+            max-width: 300px;
+        }
+        
+        .btn:hover {
+            background-color: #1a5d7a;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Formularios */
+        input[type="text"] {
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #2c7da0;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            margin: 15px 0;
+        }
+        
+        /* Pantallas */
+        .screen {
+            display: none;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        /* Opciones de pregunta */
+        .options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .option {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            background-color: #e9ecef;
+            border-color: #2c7da0;
+        }
+        
+        .option.selected {
+            background-color: #d1ecf1;
+            border-color: #2c7da0;
+        }
+        
+        /* Barra de progreso */
+        .progress-container {
+            width: 100%;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #2c7da0;
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        /* Retroalimentación */
+        .feedback {
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .correct {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+        }
+        
+        .incorrect {
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+        }
+        
+        /* Resultados finales */
+        .results {
+            background-color: #e6f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c7da0;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Pantalla de inicio -->
+        <section id="start-screen" class="screen active">
+            <h1>Despierta el Interés y Autonomía en el Aula</h1>
+            <p>Bienvenido/a docente. Este juego te ayudará a explorar y aplicar la Rúbrica 1: Involucra activamente a los estudiantes en el proceso de aprendizaje.</p>
+            <div class="highlight">
+                <p>Ingresa tu nombre para comenzar esta aventura pedagógica:</p>
+                <input type="text" id="teacher-name" placeholder="Escribe tu nombre aquí">
+                <button id="start-btn" class="btn">Iniciar Aventura</button>
+            </div>
+        </section>
+        
+        <!-- Pantalla de bienvenida -->
+        <section id="welcome-screen" class="screen">
+            <h1>Iniciamos la aventura de exploración de la Rúbrica 1</h1>
+            <div class="highlight">
+                <p>"El verdadero rol del docente no es saturar de información, sino encender en los estudiantes el amor por el conocimiento." - John Locke</p>
+                <p>"Cuando los estudiantes tienen libertad para pensar y proponer, construyen conocimiento de manera significativa."</p>
+                <p>"Enseñar no es transmitir, sino inspirar. Despertar el interés, dar autonomía y promover la reflexión."</p>
+            </div>
+            <button id="read-btn" class="btn">Despierta el interés, reflexión y autonomía en el aula</button>
+        </section>
+        
+        <!-- Pantalla de lectura -->
+        <section id="reading-screen" class="screen">
+            <h1>Despierta el interés, reflexión y autonomía en el aula</h1>
+            <div style="max-height: 400px; overflow-y: auto; text-align: left; padding: 15px; background-color: #f8f9fa; border-radius: 10px; margin-bottom: 20px;">
+                <p>Imaginemos un aula donde los estudiantes no solo escuchan, sino que brillan con curiosidad, donde las preguntas fluyen como un río y cada idea es una semilla que germina. ¿Cómo llegar a este escenario? La respuesta está en tres pilares fundamentales de la 1° rúbrica: despertar el interés, fomentar la autonomía, y promover la reflexión. Estos no son simples caprichos pedagógicos, sino principios respaldados por la ciencia y la experiencia.</p>
+                
+                <p>Despertar el interés no es un lujo, sino una necesidad biológica y cognitiva. Estudios demuestran que cuando algo captura nuestra atención, el cerebro libera dopamina, un neurotransmisor vinculado al placer y la motivación, que nos impulsa a explorar y aprender. Además, la amígdala —centro emocional del cerebro— trabaja en conjunto con el hipocampo para consolidar recuerdos, haciendo que lo aprendido con interés perdure. Como decía John Locke, el verdadero rol del docente no es saturar de información, sino encender en los estudiantes el amor por el conocimiento. Sin embargo, muchos educadores caen en la trampa de cumplir con un plan de clases rígido, olvidando que sin interés genuino, el aprendizaje se convierte en un mero trámite mecánico.</p>
+                
+                <p>Opinar y decidir con autonomía es el segundo pilar clave. Permitir que los estudiantes opinen, decidan y exploren no es un acto de rebeldía pedagógica, sino una estrategia respaldada por Ausubel y Piaget. Cuando los alumnos tienen libertad para pensar y proponer, construyen conocimiento de manera significativa, vinculando lo nuevo con lo ya conocido. La autonomía fomenta la creatividad y la perseverancia, esenciales para enfrentar retos. No obstante, algunos docentes se resisten, argumentando que perderán el control del tiempo o que las sesiones deben seguir un guion inflexible. ¿Cómo esperar que los estudiantes se involucren si incluso las conclusiones ya están predeterminadas?</p>
+                
+                <p>Finalmente, la reflexión sobre lo aprendido transforma la información en comprensión profunda al encontrarle utilidad y sentido. Esto supone no solo que tengan claro qué es lo que van a aprender y cómo, sino que tengan oportunidad de conversarlo. Rebeca Anijovich y Perrenoud destacan que cuando los estudiantes conocen los objetivos y criterios de evaluación, pueden autorregular su proceso, identificar fortalezas y debilidades, y enfocar sus esfuerzos. Sin embargo, en un sistema obsesionado por enseñar con sesiones de 45 o 90 minutos, muchos docentes sienten que no hay espacio para estas conversaciones, reduciendo el aprendizaje a una lista de tareas mecánicas.</p>
+                
+                <p>En conclusión, enseñar no es transmitir, sino inspirar. Despertar el interés, dar autonomía y promover la reflexión para comprender el sentido no son opciones, sino condiciones para un aprendizaje verdadero. Como educadores, debemos preguntarnos: ¿queremos estudiantes pasivos o mentes curiosas y críticas? El cambio comienza en nuestras aulas. ¡Abramos espacio para el asombro, la voz y la reflexión de nuestros alumnos!</p>
+            </div>
+            <button id="start-quiz-btn" class="btn">Comenzar Evaluación</button>
+        </section>
+        
+        <!-- Pantalla de evaluación -->
+        <section id="quiz-screen" class="screen">
+            <div class="progress-info">
+                <span id="progress-text">Pregunta 1 de 10</span>
+                <span id="score-text">Puntuación: 0/20</span>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            
+            <h2 id="question-text"></h2>
+            <div id="options-container" class="options"></div>
+            
+            <button id="submit-btn" class="btn" disabled>Enviar Respuesta</button>
+            
+            <div id="feedback-container" class="feedback" style="display: none;"></div>
+            
+            <button id="next-btn" class="btn" style="display: none;">Siguiente Pregunta</button>
+        </section>
+        
+        <!-- Pantalla de resultados -->
+        <section id="results-screen" class="screen">
+            <h1>¡Felicidades <span id="result-name"></span>!</h1>
+            
+            <div class="results">
+                <p>Has completado la evaluación sobre la Rúbrica 1</p>
+                <div class="score">Puntuación: <span id="final-score"></span>/20</div>
+                <div class="score">Porcentaje: <span id="final-percentage"></span>%</div>
+            </div>
+            
+            <div id="final-feedback" class="feedback"></div>
+            
+            <button id="restart-btn" class="btn">Jugar Nuevamente</button>
+        </section>
+    </div>
+
+    <script>
+        // Variables globales
+        let teacherName = "";
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+        
+        // Elementos del DOM
+        const startScreen = document.getElementById('start-screen');
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const readingScreen = document.getElementById('reading-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        
+        const teacherNameInput = document.getElementById('teacher-name');
+        const startBtn = document.getElementById('start-btn');
+        const readBtn = document.getElementById('read-btn');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const progressText = document.getElementById('progress-text');
+        const scoreText = document.getElementById('score-text');
+        const progressBar = document.getElementById('progress-bar');
+        const resultName = document.getElementById('result-name');
+        const finalScore = document.getElementById('final-score');
+        const finalPercentage = document.getElementById('final-percentage');
+        const finalFeedback = document.getElementById('final-feedback');
+        
+        // Preguntas y respuestas
+        const questions = [
+            {
+                question: "En una clase de Ciencias Sociales sobre culturas preincaicas, varios estudiantes muestran desinterés. ¿Cuál sería la estrategia más efectiva para despertar su interés según los principios de la Rúbrica 1?",
+                options: [
+                    "A) Exigir atención y aplicar un examen sorpresa al final de la clase.",
+                    "B) Plantear un problema actual relacionado con la herencia cultural y pedir que investiguen cómo esas culturas abordaron desafíos similares.",
+                    "C) Mostrar un video extenso sobre el tema y pedir que tomen apuntes.",
+                    "D) Asignar la lectura del libro de texto y hacer preguntas de comprobación."
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "¡Excelente! La opción B es la correcta porque conecta el aprendizaje con problemas actuales, despierta curiosidad y permite a los estudiantes encontrar utilidad en lo aprendido, activando su interés mediante la relevancia del contenido.",
+                    incorrect: "La respuesta correcta es B. Plantear problemas relevantes que conecten con la actualidad es una estrategia efectiva para despertar interés, ya que ayuda a los estudiantes a ver la utilidad y sentido de lo que aprenden, activando su curiosidad natural."
+                }
+            },
+            {
+                question: "Un docente quiere promover la autonomía en su clase de Matemáticas. ¿Qué acción sería más coherente con el enfoque por competencias?",
+                options: [
+                    "A) Dar instrucciones paso a paso para resolver un problema y supervisar que todos sigan exactamente el mismo procedimiento.",
+                    "B) Plantear un desafío matemático real y permitir que los estudiantes exploren diferentes estrategias para resolverlo, aunque se equivoquen en el proceso.",
+                    "C) Explicar detalladamente el procedimiento correcto y luego asignar 20 ejercicios similares para practicar.",
+                    "D) Formar grupos de trabajo y asignar un líder que guíe a los demás en la resolución del problema."
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "¡Muy bien! La opción B es la correcta porque fomenta la autonomía al permitir que los estudiantes exploren diferentes estrategias, aprendan de sus errores y construyan su propio conocimiento, desarrollando competencias matemáticas.",
+                    incorrect: "La respuesta correcta es B. Permitir que los estudiantes exploren diferentes estrategias, incluso cometiendo errores, promueve la autonomía y el desarrollo de competencias, ya que aprenden a tomar decisiones sobre su proceso de aprendizaje."
+                }
+            },
+            {
+                question: "Para favorecer la reflexión sobre la utilidad de lo aprendido en una clase de Comunicación, ¿cuál de estas estrategias sería más efectiva?",
+                options: [
+                    "A) Solicitar que memoricen las reglas gramaticales para una evaluación escrita.",
+                    "B) Plantear una situación donde deban redactar un texto persuasivo real (como una carta al director del colegio) y reflexionar sobre cómo las herramientas lingüísticas mejoran su capacidad de influir.",
+                    "C) Hacer ejercicios de identificación de partes de la oración en frases descontextualizadas.",
+                    "D) Explicar la importancia de la gramática y pedir que repitan esa explicación."
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "¡Correcto! La opción B es la más acertada porque sitúa el aprendizaje en un contexto real y significativo, permitiendo a los estudiantes experimentar directamente la utilidad de lo aprendido y reflexionar sobre su aplicación práctica.",
+                    incorrect: "La respuesta correcta es B. Situar el aprendizaje en contextos reales y significativos permite a los estudiantes experimentar directamente la utilidad de lo aprendido, favoreciendo una reflexión profunda sobre el sentido y aplicación del conocimiento."
+                }
+            },
+            {
+                question: "En una sesión de Ciencia y Tecnología, ¿qué acción del docente promueve mejor el involucramiento activo de la mayor proporción de estudiantes?",
+                options: [
+                    "A) Explicar extensamente el contenido mientras los estudiantes escuchan en silencio.",
+                    "B) Realizar una demostración práctica y luego pedir a unos pocos estudiantes voluntarios que repitan el experimento.",
+                    "C) Plantear una pregunta desafiante y dar tiempo para que todos los estudiantes piensen individualmente, luego discutan en parejas y finalmente compartan con el grupo.",
+                    "D) Asignar la lectura individual de un texto y luego hacer preguntas a los estudiantes que usualmente participan."
+                ],
+                correct: 2,
+                feedback: {
+                    correct: "¡Excelente decisión! La opción C es la correcta porque utiliza una estructura de pensamiento individual, discusión en parejas y puesta en común, lo que garantiza que todos los estudiantes se involucren activamente en el proceso de aprendizaje.",
+                    incorrect: "La respuesta correcta es C. La estrategia de 'piense-pare-comparta' involucra activamente a todos los estudiantes, no solo a los que usualmente participan, dando tiempo para la reflexión individual y la discusión colaborativa."
+                }
+            },
+            {
+                question: "Un docente quiere que sus estudiantes comprendan el sentido de aprender sobre ecosistemas en el curso de CTA. ¿Cuál es la mejor estrategia?",
+                options: [
+                    "A) Pedir que memoricen las definiciones de los componentes de un ecosistema para una prueba.",
+                    "B) Organizar una salida de campo para observar un ecosistema local, identificar problemas ambientales y proponer soluciones aplicables en su comunidad.",
+                    "C) Mostrar imágenes de diferentes ecosistemas y pedir que las clasifiquen.",
+                    "D) Asignar la elaboración de maquetas de ecosistemas con materiales reciclados."
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "¡Muy bien! La opción B es la correcta porque conecta el aprendizaje con el contexto real de los estudiantes, les permite observar problemas concretos y proponer soluciones, facilitando así la comprensión del sentido y utilidad del conocimiento.",
+                    incorrect: "La respuesta correcta es B. Conectar el aprendizaje con el contexto real de los estudiantes y permitirles identificar problemas y proponer soluciones facilita la comprensión del sentido y la utilidad del conocimiento, yendo más allá de la memorización."
+                }
+            },
+            {
+                question: "¿Qué acción docente promueve simultáneamente el interés, la autonomía y la reflexión en una clase de Historia?",
+                options: [
+                    "A) Exigir que todos presten atención a la exposición magistral sobre el tema.",
+                    "B) Plantear una investigación guiada donde los estudiantes elijan un aspecto del tema que les interese particularmente, busquen información desde diferentes perspectivas y reflexionen sobre su relevancia actual.",
+                    "C) Asignar la lectura del libro de texto y realizar un cuestionario con preguntas específicas.",
+                    "D) Mostrar un documental completo sobre el tema y pedir un resumen."
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "¡Correcto! La opción B es la más completa porque al permitir elegir aspectos de interés se despierta la motivación, al dar libertad en la investigación se fomenta la autonomía, y al reflexionar sobre la relevancia actual se promueve la comprensión del sentido del aprendizaje.",
+                    incorrect: "La respuesta correcta es B. Permitir elección despierta interés, dar libertad en la investigación fomenta autonomía, y reflexionar sobre la relevancia actual promueve la comprensión del sentido del aprendizaje, integrando los tres aspectos clave."
+                }
+            },
+            {
+                question: "En una clase de Formación Ciudadana, el docente quiere que los estudiantes reflexionen autónomamente sobre los valores democráticos. ¿Qué estrategia sería más efectiva?",
+                options: [
+                    "A) Dictar una lista de valores democráticos que los estudiantes deben copiar en sus cuadernos.",
+                    "B) Presentar un caso controversial relacionado con derechos ciudadanos y guiar una discusión donde los estudiantes argumenten sus posturas respetando diferentes viewpoints.",
+                    "C) Asignar la memorización de los artículos de la Constitución relacionados con la democracia.",
+                    "D) Explicar por qué los valores democráticos son importantes y pedir que repitan la explicación."
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "¡Excelente! La opción B es la correcta porque presenta una situación real que requiere reflexión, permite a los estudiantes construir sus argumentos de manera autónoma y practicar valores democráticos mediante el respeto a diferentes opiniones.",
+                    incorrect: "La respuesta correcta es B. Presentar casos controversiales y guiar discusiones donde los estudiantes argumenten sus posturas favorece la reflexión autónoma y la vivencia práctica de los valores democráticos, yendo más allá de la memorización."
+                }
+            },
+            {
+                question: "Para promover el interés en una clase de Matemáticas sobre geometría, ¿cuál de estas estrategias sería más efectiva?",
+                options: [
+                    "A) Explicar teoremas y fórmulas en la pizarra.",
+                    "B) Plantear un proyecto de diseño donde deban aplicar conceptos geométricos para crear un espacio recreacional en su comunidad.",
+                    "C) Asignar ejercicios del libro de texto para practicar.",
+                    "D) Mostrar imágenes de figuras geométricas en objetos cotidianos."
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "¡Muy bien! La opción B es la correcta porque sitúa el aprendizaje matemático en un contexto real y significativo, despertando interés al mostrar la utilidad práctica de la geometría y permitiendo a los estudiantes aplicar creativamente los conceptos aprendidos.",
+                    incorrect: "La respuesta correcta es B. Situar el aprendizaje en contextos reales y significativos, mostrando la utilidad práctica del conocimiento, es una estrategia efectiva para despertar el interés de los estudiantes en matemáticas."
+                }
+            },
+            {
+                question: "Un docente quiere evaluar si los estudiantes han comprendido el sentido de aprender sobre energía renovable en una clase de CTA. ¿Qué instrumento sería más apropiado?",
+                options: [
+                    "A) Un examen con preguntas sobre tipos de energías renovables y sus características.",
+                    "B) Un proyecto donde identifiquen problemas de consumo energético en su escuela y propongan soluciones aplicando energías renovables.",
+                    "C) Una exposición sobre las ventajas y desventajas de diferentes energías renovables.",
+                    "D) Un cuestionario de opción múltiple sobre conceptos clave de energía."
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "¡Correcto! La opción B es la más apropiada porque permite evaluar no solo el conocimiento conceptual sino también la comprensión del sentido y la utilidad del aprendizaje, al aplicar los conceptos para resolver problemas reales en su contexto cercano.",
+                    incorrect: "La respuesta correcta es B. Los proyectos de aplicación en contextos reales permiten evaluar la comprensión del sentido y utilidad del aprendizaje, yendo más allá de la reproducción de conceptos para valorar la capacidad de aplicar el conocimiento en situaciones significativas."
+                }
+            },
+            {
+                question: "¿Cuál de estas acciones docentes favorece mejor la autonomía y reflexión en el proceso de aprendizaje?",
+                options: [
+                    "A) Dar instrucciones detalladas para cada actividad y supervisar estrechamente su ejecución.",
+                    "B) Proporcionar rúbricas claras antes de comenzar un proyecto y generar espacios para autoevaluación y ajuste de estrategias.",
+                    "C) Corregir todos los errores en las tareas de los estudiantes y pedir que copien las correcciones.",
+                    "D) Establecer un cronograma rígido que todos deben seguir al mismo ritmo."
+                ],
+                correct: 1,
+                feedback: {
+                    correct: "¡Excelente! La opción B es la correcta porque al proporcionar criterios claros de evaluación y espacios para autoevaluación, se favorece que los estudiantes regulen autónomamente su aprendizaje, reflexionen sobre sus procesos y ajusten sus estrategias, desarrollando metacognición.",
+                    incorrect: "La respuesta correcta es B. Proporcionar criterios claros y espacios para autoevaluación favorece la autonomía y la reflexión metacognitiva, permitiendo que los estudiantes regulen su propio aprendizaje y desarrollen mayor independencia en el proceso."
+                }
+            }
+        ];
+        
+        // Event Listeners
+        startBtn.addEventListener('click', startGame);
+        readBtn.addEventListener('click', showReading);
+        startQuizBtn.addEventListener('click', startQuiz);
+        submitBtn.addEventListener('click', checkAnswer);
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', restartGame);
+        
+        // Funciones del juego
+        function startGame() {
+            teacherName = teacherNameInput.value.trim();
+            if (teacherName === "") {
+                alert("Por favor, ingresa tu nombre para continuar.");
+                return;
+            }
+            
+            showScreen(welcomeScreen);
+        }
+        
+        function showReading() {
+            showScreen(readingScreen);
+        }
+        
+        function startQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            updateProgress();
+            showQuestion();
+            showScreen(quizScreen);
+        }
+        
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            questionText.textContent = question.question;
+            
+            optionsContainer.innerHTML = "";
+            selectedOption = null;
+            submitBtn.disabled = true;
+            feedbackContainer.style.display = "none";
+            nextBtn.style.display = "none";
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => selectOption(optionElement, index));
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+        
+        function selectOption(optionElement, index) {
+            // Deseleccionar opción anterior si existe
+            const previouslySelected = document.querySelector('.option.selected');
+            if (previouslySelected) {
+                previouslySelected.classList.remove('selected');
+            }
+            
+            // Seleccionar nueva opción
+            optionElement.classList.add('selected');
+            selectedOption = index;
+            submitBtn.disabled = false;
+        }
+        
+        function checkAnswer() {
+            if (selectedOption === null) return;
+            
+            const question = questions[currentQuestion];
+            const isCorrect = selectedOption === question.correct;
+            
+            if (isCorrect) {
+                score += 2;
+                feedbackContainer.innerHTML = `<p class="correct">${question.feedback.correct}</p>`;
+                feedbackContainer.className = "feedback correct";
+            } else {
+                feedbackContainer.innerHTML = `<p class="incorrect">${question.feedback.incorrect}</p>`;
+                feedbackContainer.className = "feedback incorrect";
+            }
+            
+            feedbackContainer.style.display = "block";
+            submitBtn.style.display = "none";
+            nextBtn.style.display = "block";
+            
+            // Deshabilitar opciones después de responder
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            updateProgress();
+        }
+        
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < questions.length) {
+                showQuestion();
+                submitBtn.style.display = "block";
+                updateProgress();
+            } else {
+                showResults();
+            }
+        }
+        
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `Pregunta ${currentQuestion + 1} de ${questions.length}`;
+            scoreText.textContent = `Puntuación: ${score}/20`;
+        }
+        
+        function showResults() {
+            const percentage = (score / 20) * 100;
+            
+            resultName.textContent = teacherName;
+            finalScore.textContent = score;
+            finalPercentage.textContent = percentage.toFixed(0);
+            
+            // Retroalimentación final personalizada según el puntaje
+            if (percentage >= 90) {
+                finalFeedback.innerHTML = `
+                    <h3>¡Excelente desempeño!</h3>
+                    <p>Demuestras una comprensión excepcional de cómo despertar el interés, promover la autonomía y favorecer la reflexión en el aula. Tus respuestas reflejan una apropiación profunda de los principios de la Rúbrica 1.</p>
+                    <p><strong>Sugerencias para seguir mejorando:</strong></p>
+                    <ul>
+                        <li>Continúa diseñando experiencias de aprendizaje que conecten con los intereses y contextos de tus estudiantes.</li>
+                        <li>Comparte tus estrategias exitosas con otros docentes para inspirar prácticas pedagógicas más engaging.</li>
+                        <li>Explora cómo integrar aún más la voz y elección estudiantil en la planificación de tus sesiones.</li>
+                    </ul>
+                `;
+            } else if (percentage >= 70) {
+                finalFeedback.innerHTML = `
+                    <h3>¡Buen trabajo!</h3>
+                    <p>Tienes una comprensión sólida de los principios de la Rúbrica 1, aunque hay aspectos que puedes seguir desarrollando.</p>
+                    <p><strong>Sugerencias para mejorar:</strong></p>
+                    <ul>
+                        <li>Focaliza en crear más oportunidades para que los estudiantes reflexionen sobre la utilidad de lo aprendido.</li>
+                        <li>Experimenta con estrategias que den mayor autonomía a los estudiantes en la toma de decisiones sobre su aprendizaje.</li>
+                        <li>Diseña actividades que partan de problemas reales y relevantes para despertar mayor interés.</li>
+                    </ul>
+                `;
+            } else if (percentage >= 50) {
+                finalFeedback.innerHTML = `
+                    <h3>¡En camino al dominio!</h3>
+                    <p>Tienes conocimientos básicos sobre la Rúbrica 1, pero necesitas profundizar en su aplicación práctica.</p>
+                    <p><strong>Sugerencias para mejorar:</strong></p>
+                    <ul>
+                        <li>Revisa los fundamentos de la Rúbrica 1 y cómo se aplican en diferentes contextos educativos.</li>
+                        <li>Comienza implementando pequeñas estrategias para despertar interés, como conectar el contenido con la vida real.</li>
+                        <li>Incorpora gradualmente espacios para la reflexión y autonomía, aunque sea en actividades cortas.</li>
+                        <li>Observa a colegas que apliquen efectivamente estos principios y aprende de sus prácticas.</li>
+                    </ul>
+                `;
+            } else {
+                finalFeedback.innerHTML = `
+                    <h3>¡Ánimo, es tu oportunidad para crecer!</h3>
+                    <p>Necesitas fortalecer tu comprensión y aplicación de la Rúbrica 1. Esto es normal al comenzar a implementar nuevos enfoques pedagógicos.</p>
+                    <p><strong>Sugerencias para mejorar:</strong></p>
+                    <ul>
+                        <li>Estudia detenidamente el texto de la Rúbrica 1 y identifica sus componentes clave.</li>
+                        <li>Comienza con una estrategia a la vez: primero trabaja en despertar el interés, luego en autonomía y finalmente en reflexión.</li>
+                        <li>Busca acompañamiento pedagógico o forma comunidades de aprendizaje con otros docentes.</li>
+                        <li>Reflexiona sobre tu práctica actual e identifica pequeñas modificaciones que puedas implementar.</li>
+                    </ul>
+                `;
+            }
+            
+            showScreen(resultsScreen);
+        }
+        
+        function restartGame() {
+            teacherNameInput.value = "";
+            showScreen(startScreen);
+        }
+        
+        function showScreen(screen) {
+            // Ocultar todas las pantallas
+            startScreen.classList.remove('active');
+            welcomeScreen.classList.remove('active');
+            readingScreen.classList.remove('active');
+            quizScreen.classList.remove('active');
+            resultsScreen.classList.remove('active');
+            
+            // Mostrar la pantalla solicitada
+            screen.classList.add('active');
+        }
+    </script>
+</body>
+</html>
