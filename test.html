@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Despierta el interés y autonomía en el aula</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #bbdefb 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #2e7d32;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .author {
+            color: #1976d2;
+            font-style: italic;
+            margin-top: 15px;
+        }
+
+        .screen {
+            display: none;
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .btn {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            width: 200px;
+        }
+
+        .btn:hover {
+            background-color: #388e3c;
+            transform: translateY(-2px);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+        }
+
+        .question {
+            font-size: 18px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            background-color: #f5f5f5;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .correct {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .incorrect {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #4caf50;
+            transition: width 0.5s ease;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+
+        .reading-text {
+            line-height: 1.8;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .video-link {
+            color: #1976d2;
+            text-decoration: underline;
+            display: block;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Despierta el interés y autonomía en el aula</h1>
+            <p class="author">Por Dr. Jorge Espinoza Fernández</p>
+        </header>
+
+        <!-- Pantalla de Inicio -->
+        <div id="start-screen" class="screen active">
+            <h2>Bienvenido/a al juego pedagógico</h2>
+            <p>Para comenzar, ingresa tu nombre:</p>
+            <input type="text" id="teacher-name" class="input-field" placeholder="Tu nombre">
+            <button class="btn" onclick="startGame()">Iniciar</button>
+        </div>
+
+        <!-- Pantalla de Bienvenida -->
+        <div id="welcome-screen" class="screen">
+            <h2>Iniciamos la aventura de exploración de la Rúbrica 1</h2>
+            <p>¡Preparados para descubrir cómo despertar el interés, fomentar la autonomía y promover la reflexión en tus clases!</p>
+            <p>"La educación no es llenar un cubo, sino encender un fuego." - William Butler Yeats</p>
+            <button class="btn" onclick="showReading()">Continuar</button>
+        </div>
+
+        <!-- Pantalla de Lectura -->
+        <div id="reading-screen" class="screen">
+            <h2>Despierta el interés, reflexión y autonomía en el aula</h2>
+            <div class="reading-text" id="reading-content">
+                <h3>R1-Involucra activamente a los estudiantes en el proceso de aprendizaje1</h3>
+                <h3>Despertar el interés, autonomía y reflexión en el aula</h3>
+                <p>Imaginemos un aula donde los estudiantes no solo escuchan, sino que brillan con curiosidad, donde las preguntas fluyen como un río y cada idea es una semilla que germina. ¿Cómo llegar a este escenario? La respuesta está en tres pilares fundamentales de la 1° rúbrica: despertar el interés, fomentar la autonomía, y promover la reflexión. Estos no son simples caprichos pedagógicos, sino principios respaldados por la ciencia y la experiencia.</p>
+                
+                <p>Despertar el interés no es un lujo, sino una necesidad biológica y cognitiva. Estudios demuestran que cuando algo captura nuestra atención, el cerebro libera dopamina, un neurotransmisor vinculado al placer y la motivación, que nos impulsa a explorar y aprender. Además, la amígdala —centro emocional del cerebro— trabaja en conjunto con el hipocampo para consolidar recuerdos, haciendo que lo aprendido con interés perdure. Como decía John Locke, el verdadero rol del docente no es saturar de información, sino encender en los estudiantes el amor por el conocimiento. Sin embargo, muchos educadores caen en la trampa de cumplir con un plan de clases rígido, olvidando que sin interés genuino, el aprendizaje se convierte en un mero trámite mecánico.</p>
+                
+                <p>Opinar y decidir con autonomía es el segundo pilar clave. Permitir que los estudiantes opinen, decidan y exploren no es un acto de rebeldía pedagógica, sino una estrategia respaldada por Ausubel y Piaget. Cuando los alumnos tienen libertad para pensar y proponer, construyen conocimiento de manera significativa, vinculando lo nuevo con lo ya conocido. La autonomía fomenta la creatividad y la perseverancia, esenciales para enfrentar retos. No obstante, algunos docentes se resisten, argumentando que perderán el control del tiempo o que las sesiones deben seguir un guion inflexible. ¿Cómo esperar que los estudiantes se involucren si incluso las conclusiones ya están predeterminadas?</p>
+                
+                <p>Finalmente, la reflexión sobre lo aprendido transforma la información en comprensión profunda al encontrarle utilidad y sentido. Esto supone no solo que tengan claro qué es lo que van a aprender y cómo, sino que tengan oportunidad de conversarlo. Rebeca Anijovich y Perrenoud destacan que cuando los estudiantes conocen los objetivos y criterios de evaluación, pueden autorregular su proceso, identificar fortalezas y debilidades, y enfocar sus esfuerzos. Sin embargo, en un sistema obsesionado por enseñar con sesiones de 45 o 90 minutos, muchos docentes sienten que no hay espacio para estas conversaciones, reduciendo el aprendizaje a una lista de tareas mecánicas.</p>
+                
+                <p>En conclusión, enseñar no es transmitir, sino inspirar. Despertar el interés, dar autonomía y promover la reflexión para comprender el sentido no son opciones, sino condiciones para un aprendizaje verdadero. Como educadores, debemos preguntarnos: ¿queremos estudiantes pasivos o mentes curiosas y críticas? El cambio comienza en nuestras aulas. ¡Abramos espacio para el asombro, la voz y la reflexión de nuestros alumnos!</p>
+                
+                <a href="#" class="video-link">Ver video: https://vt.tiktok.com/ZSAWsSwKX/</a>
+            </div>
+            <button class="btn" onclick="startEvaluation()">Comenzar evaluación</button>
+        </div>
+
+        <!-- Pantalla de Evaluación -->
+        <div id="evaluation-screen" class="screen">
+            <div class="question-container">
+                <div class="question" id="current-question"></div>
+                <div class="options" id="options-container"></div>
+            </div>
+            <div class="feedback" id="feedback"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="score-display" id="score-display">Pregunta 1 de 10 | Puntuación: 0</div>
+            <button class="btn" id="next-btn" style="display:none;" onclick="nextQuestion()">Siguiente</button>
+        </div>
+
+        <!-- Pantalla de Resultados -->
+        <div id="results-screen" class="screen">
+            <h2>¡Felicidades, [Nombre]! Has completado el desafío</h2>
+            <div class="score-display" id="final-score"></div>
+            <div class="feedback correct" id="final-feedback"></div>
+            <button class="btn" onclick="restartGame()">Jugar nuevamente</button>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let currentTeacherName = '';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let questions = [];
+
+        // Definición de preguntas
+        const questionData = [
+            {
+                question: "¿Cuál es el efecto neuroquímico principal cuando los estudiantes muestran interés?",
+                options: [
+                    "Aumento de cortisol",
+                    "Liberación de dopamina",
+                    "Disminución de serotonina",
+                    "Incremento de adrenalina"
+                ],
+                correct: 1,
+                feedback: "Correcto! La dopamina es un neurotransmisor asociado con el placer y la motivación, que impulsa a los estudiantes a explorar y aprender."
+            },
+            {
+                question: "Según el texto, ¿qué peligro corre un docente que sigue un plan de clases demasiado rígido?",
+                options: [
+                    "Que pierda el control de la clase",
+                    "Que el aprendizaje se convierta en un trámite mecánico",
+                    "Que los estudiantes se aburran",
+                    "Que no cumpla con los objetivos curriculares"
+                ],
+                correct: 1,
+                feedback: "¡Excelente! Cuando no hay interés genuino, el aprendizaje se reduce a una tarea obligatoria sin significado real."
+            },
+            {
+                question: "¿Qué teoría pedagógica respalda la autonomía de los estudiantes según el texto?",
+                options: [
+                    "Teoría conductista",
+                    "Teoría de Ausubel y Piaget",
+                    "Constructivismo social",
+                    "Educación tradicional"
+                ],
+                correct: 1,
+                feedback: "¡Muy bien! Ausubel y Piaget enfatizan cómo la autonomía permite a los estudiantes construir conocimiento de forma significativa."
+            },
+            {
+                question: "¿Qué papel cumple la reflexión en el aprendizaje según Rebeca Anijovich y Perrenoud?",
+                options: [
+                    "Solo sirve para evaluar",
+                    "Permite autorregular el proceso de aprendizaje",
+                    "Es innecesaria en sesiones cortas",
+                    "Se limita a tareas mecánicas"
+                ],
+                correct: 1,
+                feedback: "Correcto! La reflexión ayuda a los estudiantes a identificar sus fortalezas y debilidades, autorregulando su propio aprendizaje."
+            },
+            {
+                question: "¿Cuál es el objetivo fundamental de la primera rúbrica según el texto?",
+                options: [
+                    "Evaluar el rendimiento académico",
+                    "Involucrar activamente a los estudiantes en el proceso de aprendizaje",
+                    "Medir la disciplina en el aula",
+                    "Calificar la presentación del docente"
+                ],
+                correct: 1,
+                feedback: "¡Perfecto! La Rúbrica 1 se centra específicamente en involucrar activamente a los estudiantes en su propio proceso de aprendizaje."
+            },
+            {
+                question: "Según el texto, ¿cuál es la analogía usada para describir un aula ideal?",
+                options: [
+                    "Un laboratorio científico",
+                    "Un río con preguntas que fluyen",
+                    "Una fábrica de conocimientos",
+                    "Un teatro con espectadores pasivos"
+                ],
+                correct: 1,
+                feedback: "¡Exacto! El texto describe un aula donde 'las preguntas fluyen como un río' y cada idea es una semilla que germina."
+            },
+            {
+                question: "¿Qué centro cerebral está relacionado con la consolidación de memorias según el texto?",
+                options: [
+                    "Corteza prefrontal",
+                    "Hipocampo",
+                    "Amígdala",
+                    "Talamo"
+                ],
+                correct: 1,
+                feedback: "Correcto! El texto menciona que la amígdala trabaja junto con el hipocampo para consolidar recuerdos cuando hay interés."
+            },
+            {
+                question: "¿Qué actitud debe evitar un docente según el texto para fomentar la autonomía?",
+                options: [
+                    "Ser demasiado flexible",
+                    "Resistir a perder el control del tiempo",
+                    "Permitir que los estudiantes decidan",
+                    "Animar a proponer ideas"
+                ],
+                correct: 1,
+                feedback: "¡Bien! Algunos docentes se resisten a la autonomía porque temen perder el control del tiempo o seguir un guion inflexible."
+            },
+            {
+                question: "¿Qué caracteriza el aprendizaje verdadero según la conclusión del texto?",
+                options: [
+                    "Transmitir información de forma eficiente",
+                    "Inspirar y despertar interés, autonomía y reflexión",
+                    "Cumplir con los planes de clases",
+                    "Obtener buenas calificaciones"
+                ],
+                correct: 1,
+                feedback: "¡Excelente! El texto concluye que enseñar no es transmitir, sino inspirar, despertando interés, autonomía y reflexión."
+            },
+            {
+                question: "¿Qué pregunta sugiere el texto que deben hacerse los educadores?",
+                options: [
+                    "¿Cómo mantener el orden en el aula?",
+                    "¿Queremos estudiantes pasivos o mentes curiosas y críticas?",
+                    "¿Cómo terminar el programa a tiempo?",
+                    "¿Cómo evaluar mejor a los estudiantes?"
+                ],
+                correct: 1,
+                feedback: "¡Perfecto! El texto invita a los educadores a reflexionar sobre el tipo de estudiantes que quieren formar."
+            }
+        ];
+
+        // Función para iniciar el juego
+        function startGame() {
+            const teacherName = document.getElementById('teacher-name').value.trim();
+            if (!teacherName) {
+                alert('Por favor, ingresa tu nombre');
+                return;
+            }
+            
+            currentTeacherName = teacherName;
+            document.getElementById('start-screen').classList.remove('active');
+            document.getElementById('welcome-screen').classList.add('active');
+        }
+
+        // Función para mostrar la pantalla de lectura
+        function showReading() {
+            document.getElementById('welcome-screen').classList.remove('active');
+            document.getElementById('reading-screen').classList.add('active');
+        }
+
+        // Función para iniciar la evaluación
+        function startEvaluation() {
+            questions = [...questionData];
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById('reading-screen').classList.remove('active');
+            document.getElementById('evaluation-screen').classList.add('active');
+            loadQuestion();
+        }
+
+        // Función para cargar una pregunta
+        function loadQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                showResults();
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            document.getElementById('current-question').textContent = `${currentQuestionIndex + 1}. ${question.question}`;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionElement);
+            });
+
+            updateProgress();
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('next-btn').style.display = 'none';
+        }
+
+        // Función para seleccionar una opción
+        function selectOption(selectedIndex) {
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedIndex === question.correct;
+            
+            if (isCorrect) {
+                score += 2;
+            }
+            
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                option.style.pointerEvents = 'none';
+                if (index === question.correct) {
+                    option.style.backgroundColor = '#e8f5e9';
+                    option.style.borderColor = '#4caf50';
+                } else if (index === selectedIndex && !isCorrect) {
+                    option.style.backgroundColor = '#ffebee';
+                    option.style.borderColor = '#f44336';
+                }
+            });
+            
+            const feedback = document.getElementById('feedback');
+            feedback.className = isCorrect ? 'feedback correct' : 'feedback incorrect';
+            feedback.textContent = isCorrect ? `¡Correcto! ${question.feedback}` : `Incorrecto. La respuesta correcta es: ${question.options[question.correct]}. ${question.feedback}`;
+            
+            document.getElementById('next-btn').style.display = 'inline-block';
+        }
+
+        // Función para pasar a la siguiente pregunta
+        function nextQuestion() {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        // Función para actualizar el progreso
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+            document.getElementById('score-display').textContent = `Pregunta ${currentQuestionIndex + 1} de ${questions.length} | Puntuación: ${score}`;
+        }
+
+        // Función para mostrar resultados
+        function showResults() {
+            document.getElementById('evaluation-screen').classList.remove('active');
+            document.getElementById('results-screen').classList.add('active');
+            
+            const percentage = Math.round((score / 20) * 100);
+            document.getElementById('final-score').textContent = `Has obtenido ${score} puntos de 20 posibles (${percentage}%)`;
+            
+            let feedbackText = '';
+            if (percentage >= 80) {
+                feedbackText = `¡Fantástico, ${currentTeacherName}! Tu puntuación demuestra un excelente dominio de los principios pedagógicos presentados en la Rúbrica 1. Sigue aplicando estas estrategias para despertar el interés, fomentar la autonomía y promover la reflexión en tus clases.`;
+            } else if (percentage >= 60) {
+                feedbackText = `Buen trabajo, ${currentTeacherName}! Has mostrado un buen entendimiento de los conceptos clave. Continúa profundizando en cómo aplicar estos principios en tu práctica docente para mejorar aún más tu impacto en el aula.`;
+            } else {
+                feedbackText = `Estás en el camino correcto, ${currentTeacherName}. Este resultado indica áreas donde puedes profundizar. Recuerda centrarte en despertar el interés de tus estudiantes, darles oportunidades para la autonomía y promover la reflexión sobre lo aprendido. ¡Sigue intentándolo!`;
+            }
+            
+            document.getElementById('final-feedback').textContent = feedbackText;
+        }
+
+        // Función para reiniciar el juego
+        function restartGame() {
+            document.getElementById('results-screen').classList.remove('active');
+            document.getElementById('start-screen').classList.add('active');
+            document.getElementById('teacher-name').value = '';
+        }
+
+        // Función para mezclar un array (para randomizar preguntas)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+    </script>
+</body>
+</html>
