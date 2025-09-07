@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Despierta el interés y autonomía en el aula — Juego pedagógico</title>
+<style>
+  :root{
+    --bg:#f4fbf9;
+    --card:#ffffff;
+    --accent-violet:#6b3fa0;
+    --accent-blue:#3b82c4;
+    --accent-green:#2f9d6e;
+    --muted:#6b7280;
+    --soft:#e9f6f2;
+    --font-stack: "Aptos Lighty", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family:var(--font-stack);
+    background:linear-gradient(180deg,var(--bg),#eef7fb 60%);
+    color:#123;
+    font-size:13px; /* solicitado */
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+  }
+  .wrap{
+    max-width:1000px;
+    margin:28px auto;
+    padding:20px;
+  }
+  header{
+    text-align:center;
+    margin-bottom:18px;
+  }
+  h1.title{
+    color:var(--accent-violet);
+    font-size:28px;
+    margin:6px 0 0 0;
+    letter-spacing:0.4px;
+  }
+  .card{
+    background:var(--card);
+    border-radius:14px;
+    padding:20px;
+    box-shadow:0 6px 18px rgba(15,23,42,0.06);
+  }
+  .intro{
+    display:flex;
+    gap:18px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+  .left{
+    flex:1 1 480px;
+  }
+  label{display:block;margin-bottom:6px;font-weight:600;color:var(--accent-violet);}
+  input[type="text"]{
+    width:100%;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid #d5dde5;
+    font-size:14px;
+    box-sizing:border-box;
+  }
+  .btn{
+    display:inline-block;
+    padding:12px 18px;
+    border-radius:12px;
+    border:none;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    margin-top:8px;
+    box-shadow:0 6px 12px rgba(59,130,246,0.08);
+  }
+  .btn-primary{ background:linear-gradient(180deg,var(--accent-violet),#53307e); color:#fff; }
+  .btn-secondary{ background:linear-gradient(180deg,var(--accent-blue),#286499); color:#fff; }
+  .big{
+    font-size:16px;
+    padding:14px 20px;
+    border-radius:14px;
+  }
+  .center{ text-align:center;}
+  .muted{ color:var(--muted); font-size:13px; }
+  .welcome{
+    margin-top:16px;
+    padding:14px;
+    border-radius:10px;
+    background:linear-gradient(180deg, rgba(107,63,160,0.06), rgba(59,130,246,0.03));
+  }
+  .section{ margin-top:18px; }
+  .reading-btn{
+    width:100%;
+    text-align:left;
+    padding:14px;
+    border-radius:12px;
+    border:2px dashed rgba(107,63,160,0.12);
+    background:linear-gradient(180deg, rgba(47,157,110,0.03), transparent);
+    font-size:15px;
+    cursor:pointer;
+  }
+  .reader{
+    margin-top:12px;
+    padding:14px;
+    border-radius:10px;
+    background:#fff;
+    max-height:360px;
+    overflow:auto;
+    border:1px solid #eef3f6;
+  }
+  .reader h3{ color:var(--accent-violet); margin-top:0;}
+  .quiz{
+    margin-top:14px;
+  }
+  .question-card{
+    margin-top:12px;
+    padding:16px;
+    background:var(--soft);
+    border-radius:10px;
+  }
+  .q-title{ font-weight:700; margin-bottom:8px; }
+  .options{ display:flex; flex-direction:column; gap:8px; margin-top:8px; }
+  .option{
+    padding:12px;
+    border-radius:10px;
+    border:1px solid rgba(18,18,18,0.06);
+    background:#fff;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .option input{ transform:scale(1.2); }
+  .feedback{
+    margin-top:10px;
+    padding:12px;
+    border-radius:10px;
+    font-size:14px;
+  }
+  .fb-correct{ background:linear-gradient(90deg,#ecfdf5,#e6faf0); border-left:6px solid #10b981; color:#065f46;}
+  .fb-wrong{ background:linear-gradient(90deg,#fff1f2,#fff5f6); border-left:6px solid #ef4444; color:#7f1d1d;}
+  .scorebar{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:12px;
+  }
+  .progress{
+    flex:1;
+    height:14px;
+    background:#e6eef4;
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .progress > i{
+    display:block;
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--accent-green), var(--accent-blue));
+  }
+  .small-muted{ font-size:12px;color:var(--muted); }
+  footer{
+    margin-top:20px;
+    text-align:center;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .final{
+    text-align:left;
+  }
+  .resources{ margin-top:12px; padding:12px; border-radius:8px; background:#fff; border:1px solid #eef3f6; }
+  a.link{ color:var(--accent-blue); font-weight:700; text-decoration:none; }
+  @media (max-width:720px){
+    .intro{ flex-direction:column; align-items:stretch;}
+  }
+
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <h1 class="title">Despierta el interés y autonomía en el aula</h1>
+      <div class="muted">Juego pedagógico para docentes de EBR — Rúbrica 1</div>
+    </header>
+
+    <div id="screen-start" class="card">
+      <div class="intro">
+        <div class="left">
+          <label for="teacherName">Nombre del docente participante</label>
+          <input id="teacherName" type="text" placeholder="Escribe tu nombre completo" aria-label="Nombre del docente" />
+          <div style="margin-top:8px;">
+            <button id="btnStart" class="btn btn-primary big">Iniciar</button>
+            <button id="btnWelcome" class="btn btn-secondary big" style="margin-left:8px;">Ver bienvenida</button>
+          </div>
+          <p class="muted" style="margin-top:10px;">Ingresa tu nombre para que el juego te salude y personalice la retroalimentación.</p>
+        </div>
+        <div style="flex:0 0 230px; text-align:center;">
+          <div style="background:linear-gradient(180deg,#f7fbff,#eef8f2); padding:14px; border-radius:12px;">
+            <div style="font-weight:700; color:var(--accent-violet); font-size:16px;">Objetivo del juego</div>
+            <div class="small-muted" style="margin-top:8px; text-align:left; font-size:13px;">
+              Promover que los docentes se apropien y apliquen la Rúbrica 1: Involucra activamente a los estudiantes en el proceso de aprendizaje.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="welcome section" id="welcomeBox" style="display:none;">
+        <h2 style="color:var(--accent-violet); margin:6px 0 6px 0;">Iniciamos la aventura de exploración de la Rúbrica 1</h2>
+        <p>¡Bienvenido/a! En este recorrido práctico exploraremos formas de despertar el interés, promover la autonomía y favorecer la reflexión en tus sesiones. Responde con atención: cada situación plantea un reto real y ofrece retroalimentación pedagógica inmediata.</p>
+        <p><strong>Frases motivadoras:</strong> "El aula es un laboratorio para la curiosidad." — "Pequeñas decisiones del estudiante significan grandes avances en su autonomía." — "La reflexión convierte información en comprensión con sentido."</p>
+      </div>
+
+    </div>
+
+    <div id="screen-reading" class="card" style="display:none; margin-top:18px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+        <h2 style="color:var(--accent-violet); margin:0;">Selección de lectura</h2>
+        <div class="small-muted">Siguiente paso: leer y luego evaluar</div>
+      </div>
+
+      <div class="section">
+        <button id="btnOpenText" class="reading-btn" aria-controls="reader">
+          Despierta el interés, reflexión y autonomía en el aula
+        </button>
+
+        <div id="reader" class="reader" style="display:none;" tabindex="0" aria-live="polite">
+          <h3>R1: Despertar el interés, autonomía y reflexión en el aula</h3>
+
+          <p><strong>Involucra activamente a los estudiantes en el proceso de aprendizaje</strong></p>
+
+          <p>Imaginemos un aula donde los estudiantes no solo escuchan, sino que brillan con curiosidad, donde las preguntas fluyen como un río y cada idea es una semilla que germina. ¿Cómo llegar a este escenario? La respuesta está en tres pilares fundamentales de la 1° rúbrica: despertar el interés, fomentar la autonomía, y promover la reflexión. Estos no son simples caprichos pedagógicos, sino principios respaldados por la ciencia y la experiencia.</p>
+
+          <p>Despertar el interés no es un lujo, sino una necesidad biológica y cognitiva. Estudios demuestran que cuando algo captura nuestra atención, el cerebro libera dopamina, un neurotransmisor vinculado al placer y la motivación, que nos impulsa a explorar y aprender. Además, la amígdala —centro emocional del cerebro— trabaja en conjunto con el hipocampo para consolidar recuerdos, haciendo que lo aprendido con interés perdure. Como decía John Locke, el verdadero rol del docente no es saturar de información, sino encender en los estudiantes el amor por el conocimiento. Sin embargo, muchos educadores caen en la trampa de cumplir con un plan de clases rígido, olvidando que sin interés genuino, el aprendizaje se convierte en un mero trámite mecánico.</p>
+
+          <p>Opinar y decidir con autonomía es el segundo pilar clave. Permitir que los estudiantes opinen, decidan y exploren no es un acto de rebeldía pedagógica, sino una estrategia respaldada por Ausubel y Piaget. Cuando los alumnos tienen libertad para pensar y proponer, construyen conocimiento de manera significativa, vinculando lo nuevo con lo ya conocido. La autonomía fomenta la creatividad y la perseverancia, esenciales para enfrentar retos. No obstante, algunos docentes se resisten, argumentando que perderán el control del tiempo o que las sesiones deben seguir un guion inflexible. ¿Cómo esperar que los estudiantes se involucren si incluso las conclusiones ya están predeterminadas?</p>
+
+          <p>Finalmente, la reflexión sobre lo aprendido transforma la información en comprensión profunda al encontrarle utilidad y sentido. Esto supone no solo que tengan claro qué es lo que van a aprender y cómo, sino que tengan oportunidad de conversarlo. Rebeca Anijovich y Perrenoud destacan que cuando los estudiantes conocen los objetivos y criterios de evaluación, pueden autorregular su proceso, identificar fortalezas y debilidades, y enfocar sus esfuerzos. Sin embargo, en un sistema obsesionado por enseñar con sesiones de 45 o 90 minutos, muchos docentes sienten que no hay espacio para estas conversaciones, reduciendo el aprendizaje a una lista de tareas mecánicas.</p>
+
+          <p>En conclusión, enseñar no es transmitir, sino inspirar. Despertar el interés, dar autonomía y promover la reflexión para comprender el sentido no son opciones, sino condiciones para un aprendizaje verdadero. Como educadores, debemos preguntarnos: ¿queremos estudiantes pasivos o mentes curiosas y críticas? El cambio comienza en nuestras aulas. ¡Abramos espacio para el asombro, la voz y la reflexión de nuestros alumnos!</p>
+
+          <p><strong>Ver video:</strong> <a class="link" href="https://vt.tiktok.com/ZSAWsSwKX/" target="_blank" rel="noopener">https://vt.tiktok.com/ZSAWsSwKX/</a></p>
+
+          <p style="margin-top:16px; font-weight:700;">Dr. Jorge Espinoza Fernández</p>
+        </div>
+
+        <div style="margin-top:12px;">
+          <button id="btnBeginEval" class="btn btn-primary big" disabled>Comenzar evaluación</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="screen-quiz" class="card" style="display:none; margin-top:18px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div style="font-weight:700; color:var(--accent-violet);">Evaluación: Aplicando la Rúbrica 1</div>
+          <div id="greeting" class="small-muted">Hola</div>
+        </div>
+        <div class="scorebar" style="width:45%;">
+          <div style="font-weight:700;">Puntaje: <span id="scoreDisplay">0</span></div>
+          <div style="width:100%;">
+            <div class="progress" aria-label="Progreso de la evaluación">
+              <i id="progressFill"></i>
+            </div>
+            <div class="small-muted" style="margin-top:6px; text-align:right;"><span id="progressPercent">0%</span> completado</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="questionArea" class="quiz"></div>
+
+      <div style="margin-top:12px; display:flex; gap:8px;">
+        <button id="btnSubmit" class="btn btn-secondary big" disabled>Enviar respuesta</button>
+        <button id="btnNext" class="btn btn-primary big" style="display:none;">Siguiente</button>
+        <button id="btnQuit" class="btn" style="background:#fff;border:1px solid #e6eef4;">Salir (volver al inicio)</button>
+      </div>
+    </div>
+
+    <div id="screen-final" class="card" style="display:none; margin-top:18px;">
+      <div class="final">
+        <h2 style="color:var(--accent-violet);">Resultados</h2>
+        <p id="finalMsg" style="font-weight:700;"></p>
+        <div style="margin-top:10px;">
+          <div><strong>Puntaje total:</strong> <span id="finalScore"></span> / 20</div>
+          <div style="margin-top:6px;"><strong>Porcentaje de aciertos:</strong> <span id="finalPercent"></span>%</div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <h3 style="color:var(--accent-violet); margin:6px 0;">Retroalimentación pedagógica</h3>
+          <div id="detailedFeedback" class="resources"></div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <h3 style="color:var(--accent-violet); margin:6px 0;">Sugerencias y recursos para mejorar</h3>
+          <div id="suggestions" class="resources"></div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <button id="btnRestart" class="btn btn-primary big">Volver al inicio</button>
+          <button id="btnClose" class="btn" style="background:#fff;border:1px solid #e6eef4; margin-left:8px;">Cerrar juego</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Creado por: Dr. Jorge Espinoza Fernández
+    </footer>
+
+  </div>
+
+<script>
+/* Juego pedagógico - un solo archivo */
+(function(){
+  // Datos del juego: preguntas, alternativas, respuesta correcta (index), categoría (interest/autonomy/reflection), feedbacks
+  const questions = [
+    {
+      id:1,
+      category:'interest',
+      q: "Caso: En una sesión de ciencias, el docente presenta un contenido complejo siguiendo el guion del libro. Después de 10 minutos nota desconexión. ¿Cuál es la mejor intervención inmediata para recuperar el interés según el texto?",
+      options:[
+        "Aumentar la velocidad de exposición para terminar antes.",
+        "Pedir a los alumnos que copien textual lo explicado.",
+        "Plantear una pregunta abierta conectada con la vida diaria del estudiantado y proponer una breve exploración.",
+        "Cambiar a una evaluación sorpresa para mantener la atención."
+      ],
+      correct:2,
+      feedbackCorrect: "¡Bien! Plantear una pregunta relacionada con la experiencia de los estudiantes ayuda a activar la curiosidad y la liberación de dopamina que facilita la atención y la memoria.",
+      feedbackWrong: "Recuerda: recuperar interés requiere conectar el contenido con la experiencia y la curiosidad del estudiante, no con control autoritario o ritmo acelerado."
+    },
+    {
+      id:2,
+      category:'autonomy',
+      q: "Caso: Deseas promover autonomía en un taller de lengua. ¿Cuál de estas acciones genera mayor autonomía y aprendizaje significativo?",
+      options:[
+        "Dar a los estudiantes una lista cerrada de actividades a cumplir sin opciones.",
+        "Permitir que los estudiantes elijan entre varias tareas, justificando su elección y diseñando un producto final.",
+        "Asignar tareas adicionales a los estudiantes más rápidos para que no molesten.",
+        "Evaluar solo con exámenes al final para medir lo aprendido."
+      ],
+      correct:1,
+      feedbackCorrect: "Exacto. Ofrecer opciones y pedir justificación fomenta la toma de decisiones, vincula lo nuevo con lo conocido y promueve responsabilidad sobre su aprendizaje.",
+      feedbackWrong: "Piensa en autonomía como capacidad de decidir y responsabilizarse por el aprendizaje; las listas rígidas y exámenes no construyen esa capacidad por sí solos."
+    },
+    {
+      id:3,
+      category:'reflection',
+      q: "Caso: Al terminar una unidad, ¿qué estrategia facilita más la reflexión y autorregulación del estudiante?",
+      options:[
+        "Dar la nota final sin devolver trabajos.",
+        "Pedir a los estudiantes que comparen su trabajo con criterios claros y escriban un plan de mejora.",
+        "Evitar discutir dificultades para no desmotivar.",
+        "Repetir la exposición para que el estudiante memorice."
+      ],
+      correct:1,
+      feedbackCorrect: "Muy bien. Comparar el propio trabajo con criterios y planear mejoras favorece la autorregulación y la comprensión del sentido de lo aprendido.",
+      feedbackWrong: "La reflexión implica confrontar el propio desempeño con criterios y planear acciones de mejora; evitar el diálogo no promueve comprensión profunda."
+    },
+    {
+      id:4,
+      category:'interest',
+      q: "Caso: Un docente quiere diseñar la primera actividad de la sesión para captar atención. ¿Cuál planteamiento se alinea mejor con la evidencia mencionada en el texto?",
+      options:[
+        "Comenzar con una lectura larga del manual para cubrir contenidos.",
+        "Iniciar con una tarea práctica breve que plantee un misterio o problema relevante para los estudiantes.",
+        "Pedir silencio absoluto y controlar cada movimiento para evitar distracciones.",
+        "Programar un examen al inicio para diagnosticar conocimientos."
+      ],
+      correct:1,
+      feedbackCorrect: "Correcto. Empezar con un problema real y relevante activa la curiosidad y prepara al cerebro para aprender con interés.",
+      feedbackWrong: "Recuerda: el interés se despierta con experiencias significativas y pertinentes para el estudiante, no con exposiciones largas ni control rígido."
+    },
+    {
+      id:5,
+      category:'autonomy',
+      q: "Caso: En un proyecto por competencias, ¿qué práctica es más efectiva para que los estudiantes construyan autonomía?",
+      options:[
+        "Asignar roles fijos sin posibilidad de cambio.",
+        "Ofrecer orientación, criterios y permitir que los grupos negocien responsabilidades y plazos.",
+        "Controlar todas las decisiones del proyecto y redactar el informe final por ellos.",
+        "Eliminar criterios y evaluar solo por esfuerzo visible."
+      ],
+      correct:1,
+      feedbackCorrect: "Excelente. Orientación combinada con autonomía en la decisión promueve responsabilidad, creatividad y aprendizaje significativo.",
+      feedbackWrong: "La autonomía sustentable requiere orientación y criterios claros; ni la permisividad total ni el control absoluto favorecen la autorregulación."
+    },
+    {
+      id:6,
+      category:'reflection',
+      q: "Caso: Un estudiante no entiende la utilidad de una actividad. Como docente, ¿qué es más coherente con promover reflexión sobre el sentido de lo aprendido?",
+      options:[
+        "Ignorar la pregunta y seguir con el programa.",
+        "Pedirle al estudiante que explique en qué contexto podría aplicar lo aprendido y discutirlo con la clase.",
+        "Repetir la teoría sin ejemplos.",
+        "Reducir la actividad porque consume tiempo de evaluación."
+      ],
+      correct:1,
+      feedbackCorrect: "Correcto. Pedir conectar lo aprendido con usos concretos transforma la información en comprensión con sentido y facilita la autorregulación.",
+      feedbackWrong: "Fomentar reflexión implica ayudar a identificar la utilidad del aprendizaje; ignorar dudas o repetir teoría sin sentido no ayuda."
+    },
+    {
+      id:7,
+      category:'interest',
+      q: "Caso: Durante una unidad el docente detecta bajos niveles de motivación en la mayoría. ¿Qué diagnóstico pedagógico y acción están mejor fundados según el texto?",
+      options:[
+        "Diagnóstico: falta de interés; Acción: recortar contenidos sin cambiar la metodología.",
+        "Diagnóstico: falta de interés por exceso de exposición pasiva; Acción: incorporar actividades activas y relevantes que conecten con experiencias del alumnado.",
+        "Diagnóstico: problemas externos; Acción: castigar a los estudiantes para mejorar disciplina.",
+        "Diagnóstico: baja capacidad intelectual; Acción: bajar los estándares de aprendizaje."
+      ],
+      correct:1,
+      feedbackCorrect: "Muy bien. El texto enfatiza que la exposición pasiva reduce interés; cambiar metodología hacia actividades activas aumenta motivación y retención.",
+      feedbackWrong: "Evita soluciones punitivas o reduccionistas; el cambio metodológico hacia actividades relevantes promueve interés sostenido."
+    },
+    {
+      id:8,
+      category:'autonomy',
+      q: "Caso: Un docente quiere implementar autonomía pero teme perder control del tiempo. ¿Qué diseño de sesión equilibra autonomía y gestión del tiempo?",
+      options:[
+        "No permitir elecciones para mantener el cronograma.",
+        "Establecer tiempos claros, criterios y momentos de revisión donde los estudiantes informan avances y reciben retroalimentación.",
+        "Permitir total libertad sin marcos temporales.",
+        "Eliminar actividades grupales para evitar desviaciones."
+      ],
+      correct:1,
+      feedbackCorrect: "Correcto. Marcos temporales y momentos de revisión permiten autonomía y al mismo tiempo control pedagógico del tiempo y los resultados.",
+      feedbackWrong: "La autonomía con marcos y revisión equilibra libertad y orden; sin marcos es difícil lograr resultados pedagógicos consistentes."
+    },
+    {
+      id:9,
+      category:'reflection',
+      q: "Caso: Al planificar una unidad por competencias, ¿qué elemento es esencial para que los estudiantes reflexionen sobre su progreso?",
+      options:[
+        "Ocultar los criterios de evaluación hasta el final.",
+        "Presentar objetivos y criterios desde el inicio y promover debates sobre evidencias de aprendizaje.",
+        "Solo entregar rúbricas sin explicarlas ni modelarlas.",
+        "Calificar solo con una nota numérica sin retroalimentación."
+      ],
+      correct:1,
+      feedbackCorrect: "Perfecto. Compartir criterios y discutir evidencias promueve auto-evaluación y reflexión, tal como indica la literatura citada en el texto.",
+      feedbackWrong: "La reflexión y autorregulación aumentan cuando los estudiantes conocen criterios y discuten evidencias; ocultarlos no favorece la comprensión."
+    },
+    {
+      id:10,
+      category:'interest',
+      q: "Caso: Un profesor desea que lo aprendido perdure más allá de la sesión. ¿Qué combinación de acciones favorece la consolidación de la memoria según el texto?",
+      options:[
+        "Exposición continua sin conexión con emociones o experiencias previas.",
+        "Actividades que despiertan interés, generan una emoción positiva y relacionan el contenido con experiencias familiares.",
+        "Incrementar tareas de memorización sin contexto.",
+        "Evaluaciones sorpresa frecuentes sin retroalimentación."
+      ],
+      correct:1,
+      feedbackCorrect: "¡Exacto! Conectar contenido con emoción, relevancia y experiencia activa la amígdala y el hipocampo, favoreciendo la consolidación de la memoria.",
+      feedbackWrong: "La memorización sin interés ni contexto suele ser efímera; vincular emoción y relevancia fortalece la retención."
+    }
+  ];
+
+  // Estado del juego
+  let state = {
+    name: '',
+    currentIndex:0,
+    score:0,
+    answered:0,
+    responses: [], // store {qId, chosen, correct}
+    categoryMistakes: { interest:0, autonomy:0, reflection:0 }
+  };
+
+  // Elementos
+  const el = {
+    teacherName: document.getElementById('teacherName'),
+    btnStart: document.getElementById('btnStart'),
+    btnWelcome: document.getElementById('btnWelcome'),
+    welcomeBox: document.getElementById('welcomeBox'),
+    screenStart: document.getElementById('screen-start'),
+    screenReading: document.getElementById('screen-reading'),
+    btnOpenText: document.getElementById('btnOpenText'),
+    reader: document.getElementById('reader'),
+    btnBeginEval: document.getElementById('btnBeginEval'),
+    screenQuiz: document.getElementById('screen-quiz'),
+    greeting: document.getElementById('greeting'),
+    questionArea: document.getElementById('questionArea'),
+    btnSubmit: document.getElementById('btnSubmit'),
+    btnNext: document.getElementById('btnNext'),
+    scoreDisplay: document.getElementById('scoreDisplay'),
+    progressFill: document.getElementById('progressFill'),
+    progressPercent: document.getElementById('progressPercent'),
+    btnQuit: document.getElementById('btnQuit'),
+    screenFinal: document.getElementById('screen-final'),
+    finalMsg: document.getElementById('finalMsg'),
+    finalScore: document.getElementById('finalScore'),
+    finalPercent: document.getElementById('finalPercent'),
+    detailedFeedback: document.getElementById('detailedFeedback'),
+    suggestions: document.getElementById('suggestions'),
+    btnRestart: document.getElementById('btnRestart'),
+    btnClose: document.getElementById('btnClose')
+  };
+
+  // Eventos iniciales
+  el.btnStart.addEventListener('click', startFromInput);
+  el.btnWelcome.addEventListener('click', toggleWelcome);
+  el.btnOpenText.addEventListener('click', openText);
+  el.btnBeginEval.addEventListener('click', beginEvaluation);
+  el.btnSubmit.addEventListener('click', submitAnswer);
+  el.btnNext.addEventListener('click', nextQuestion);
+  el.btnQuit.addEventListener('click', quitToStart);
+  el.btnRestart.addEventListener('click', resetGame);
+  el.btnClose.addEventListener('click', closeGame);
+
+  function toggleWelcome(){
+    el.welcomeBox.style.display = el.welcomeBox.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function startFromInput(){
+    const name = el.teacherName.value.trim();
+    if(!name){
+      alert('Por favor ingresa tu nombre para iniciar el juego.');
+      el.teacherName.focus();
+      return;
+    }
+    state.name = name;
+    gotoReading();
+  }
+
+  function gotoReading(){
+    el.screenStart.style.display = 'none';
+    el.screenReading.style.display = 'block';
+    el.greeting.textContent = `Hola, ${state.name}. Lee el texto y comienza la evaluación.`;
+    // Focus on reading button for accessibility
+    el.btnOpenText.focus();
+  }
+
+  function openText(){
+    el.reader.style.display = 'block';
+    el.btnBeginEval.disabled = false;
+    // scroll to reader
+    el.reader.scrollIntoView({behavior:'smooth'});
+  }
+
+  function beginEvaluation(){
+    el.screenReading.style.display = 'none';
+    el.screenQuiz.style.display = 'block';
+    state.currentIndex = 0;
+    state.score = 0;
+    state.answered = 0;
+    state.responses = [];
+    state.categoryMistakes = { interest:0, autonomy:0, reflection:0 };
+    renderQuestion();
+    updateScoreUI();
+  }
+
+  function renderQuestion(){
+    const q = questions[state.currentIndex];
+    el.questionArea.innerHTML = '';
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    const title = document.createElement('div');
+    title.className = 'q-title';
+    title.textContent = `Pregunta ${state.currentIndex + 1} de ${questions.length}`;
+    const qText = document.createElement('div');
+    qText.style.marginTop='8px';
+    qText.innerHTML = `<div style="font-weight:700;">${q.q}</div>`;
+
+    const opts = document.createElement('div');
+    opts.className = 'options';
+    q.options.forEach((opt, i) => {
+      const optWrap = document.createElement('label');
+      optWrap.className = 'option';
+      optWrap.setAttribute('data-index', i);
+      optWrap.setAttribute('tabindex', 0);
+      optWrap.innerHTML = `<input type="radio" name="choice" value="${i}" aria-label="Opción ${i+1}"> <div style="flex:1;">${opt}</div>`;
+      optWrap.addEventListener('click', () => {
+        const radio = optWrap.querySelector('input[type="radio"]');
+        radio.checked = true;
+        enableSubmit();
+        // mark selected visually
+        Array.from(opts.children).forEach(c=>c.style.boxShadow='none');
+        optWrap.style.boxShadow = '0 4px 12px rgba(59,130,246,0.08)';
+      });
+      optWrap.addEventListener('keypress', (e)=>{
+        if(e.key === 'Enter' || e.key === ' ') optWrap.click();
+      });
+      opts.appendChild(optWrap);
+    });
+
+    card.appendChild(title);
+    card.appendChild(qText);
+    card.appendChild(opts);
+
+    const fb = document.createElement('div');
+    fb.id = 'feedbackArea';
+    card.appendChild(fb);
+
+    el.questionArea.appendChild(card);
+
+    // reset buttons
+    el.btnSubmit.disabled = true;
+    el.btnSubmit.style.display = 'inline-block';
+    el.btnNext.style.display = 'none';
+  }
+
+  function enableSubmit(){ el.btnSubmit.disabled = false; }
+
+  function submitAnswer(){
+    const q = questions[state.currentIndex];
+    const chosen = parseInt(document.querySelector('input[name="choice"]:checked')?.value);
+    if(typeof chosen !== 'number' || isNaN(chosen)){
+      alert('Selecciona una alternativa antes de enviar.');
+      return;
+    }
+    // disable options
+    Array.from(document.querySelectorAll('.option input')).forEach(inp=>inp.disabled=true);
+    el.btnSubmit.disabled = true;
+
+    const isCorrect = chosen === q.correct;
+    state.answered++;
+    state.responses.push({ qId: q.id, chosen, correct: q.correct });
+    if(isCorrect){
+      state.score += 2; // 2 points each
+    } else {
+      // register mistake by category
+      state.categoryMistakes[q.category] = (state.categoryMistakes[q.category] || 0) + 1;
+    }
+
+    // feedback area
+    const fbArea = document.getElementById('feedbackArea');
+    fbArea.innerHTML = '';
+    const fbDiv = document.createElement('div');
+    fbDiv.className = 'feedback ' + (isCorrect ? 'fb-correct':'fb-wrong');
+    fbDiv.setAttribute('role','status');
+    if(isCorrect){
+      fbDiv.innerHTML = `<strong>Respuesta correcta.</strong> ${q.feedbackCorrect} <div style="margin-top:8px;" class="small-muted">¡Sigue así, ${state.name}!</div>`;
+    } else {
+      fbDiv.innerHTML = `<strong>Respuesta incorrecta.</strong> ${q.feedbackWrong} <div style="margin-top:8px;" class="small-muted">Análisis sugerido: revisa la relación entre la acción docente y la autonomía/interés/reflexión.</div>`;
+    }
+    fbArea.appendChild(fbDiv);
+
+    // show next or finish
+    if(state.currentIndex < questions.length - 1){
+      el.btnNext.style.display = 'inline-block';
+    } else {
+      // finish
+      setTimeout(()=> showFinal(), 800);
+    }
+    updateScoreUI();
+  }
+
+  function nextQuestion(){
+    state.currentIndex++;
+    renderQuestion();
+    updateProgressUI();
+  }
+
+  function updateScoreUI(){
+    el.scoreDisplay.textContent = state.score;
+    updateProgressUI();
+  }
+
+  function updateProgressUI(){
+    const percent = Math.round((state.currentIndex / questions.length) * 100);
+    el.progressFill.style.width = Math.min(100, percent) + '%';
+    el.progressPercent.textContent = `${Math.min(100, percent)}%`;
+  }
+
+  function quitToStart(){
+    if(confirm('¿Deseas volver al inicio del juego? Puedes reiniciar cuando quieras.')){
+      resetGame();
+    }
+  }
+
+  function resetGame(){
+    // reset UI and state
+    state = { name: state.name || '', currentIndex:0, score:0, answered:0, responses: [], categoryMistakes: { interest:0, autonomy:0, reflection:0 } };
+    el.screenFinal.style.display = 'none';
+    el.screenQuiz.style.display = 'none';
+    el.screenReading.style.display = 'block';
+    el.screenStart.style.display = 'none';
+    el.greeting.textContent = `Hola, ${state.name}. Lee el texto y comienza la evaluación.`;
+    el.progressFill.style.width = '0%';
+    el.progressPercent.textContent = '0%';
+    el.scoreDisplay.textContent = '0';
+    el.btnBeginEval.disabled = false;
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function showFinal(){
+    el.screenQuiz.style.display = 'none';
+    el.screenFinal.style.display = 'block';
+    const totalScore = state.score;
+    const percent = Math.round((totalScore / (questions.length * 2)) * 100);
+    el.finalScore.textContent = totalScore;
+    el.finalPercent.textContent = percent;
+    el.finalMsg.textContent = `¡${state.name}, completaste la evaluación! Aquí tienes un análisis de tu desempeño.`;
+
+    // Detailed feedback: overall and by category
+    const mistakes = state.categoryMistakes;
+    let feedbackHtml = `<p>Has obtenido <strong>${totalScore}</strong> puntos sobre ${questions.length * 2}.</p>`;
+    feedbackHtml += `<ul>`;
+    feedbackHtml += `<li>Preguntas relacionadas con interés: <strong>${countByCategory('interest')}</strong> (errores: ${mistakes.interest || 0})</li>`;
+    feedbackHtml += `<li>Preguntas relacionadas con autonomía: <strong>${countByCategory('autonomy')}</strong> (errores: ${mistakes.autonomy || 0})</li>`;
+    feedbackHtml += `<li>Preguntas relacionadas con reflexión: <strong>${countByCategory('reflection')}</strong> (errores: ${mistakes.reflection || 0})</li>`;
+    feedbackHtml += `</ul>`;
+    el.detailedFeedback.innerHTML = feedbackHtml;
+
+    // Suggestions based on mistakes
+    const suggestionsList = generateSuggestions(mistakes);
+    el.suggestions.innerHTML = suggestionsList;
+
+    // progress bar full
+    el.progressFill.style.width = '100%';
+    el.progressPercent.textContent = '100%';
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function countByCategory(cat){
+    return questions.filter(q=>q.category===cat).length;
+  }
+
+  function generateSuggestions(mistakes){
+    // Build suggestions tailored for each of the three aspects
+    const parts = [];
+    // interest
+    if((mistakes.interest || 0) >= 2){
+      parts.push(`<div>
+        <strong>1) Despertar el interés</strong>
+        <p>Observaste dificultades en estrategias para captar y sostener la atención. Sugerencias prácticas:</p>
+        <ul>
+          <li>Inicia sesiones con un desafío o pregunta auténtica vinculada al contexto del estudiantado.</li>
+          <li>Incluye actividades breves y activas (micro-experiencias) que permitan exploración inmediata.</li>
+          <li>Usa ejemplos y problemas relacionados con la vida cotidiana para activar emociones y motivación.</li>
+        </ul>
+        <p class="small-muted">Recurso: Lee sobre <em>design thinking</em> para aprendizaje; mira videos cortos de prácticas activas en plataformas educativas y prueba micro-tareas de 5-10 minutos.</p>
+      </div>`);
+    } else {
+      parts.push(`<div><strong>1) Despertar el interés</strong><p>Buen manejo de estrategias para interés. Continúa utilizando problemas reales y actividades que conecten con los estudiantes.</p></div>`);
+    }
+
+    // autonomy
+    if((mistakes.autonomy || 0) >= 2){
+      parts.push(`<div style="margin-top:10px;">
+        <strong>2) Promover la autonomía</strong>
+        <p>Se evidencian áreas para fortalecer la autonomía en el diseño de sesiones. Sugerencias:</p>
+        <ul>
+          <li>Ofrece opciones significativas y pide justificarlas (elecciones pedagógicas con propósito).</li>
+          <li>Establece marcos temporales y puntos de control para combinar libertad y responsabilidad.</li>
+          <li>Modela la toma de decisiones y enseña a planificar pasos concretos hacia un producto final.</li>
+        </ul>
+        <p class="small-muted">Recurso: Implementa proyectos breves por competencias donde los estudiantes definan roles y productos; usa listas de cotejo para autorregulación.</p>
+      </div>`);
+    } else {
+      parts.push(`<div style="margin-top:10px;"><strong>2) Promover la autonomía</strong><p>Tienes buenas prácticas para promover autonomía. Mantén marcos claros y revisión periódica para sostenerla.</p></div>`);
+    }
+
+    // reflection
+    if((mistakes.reflection || 0) >= 2){
+      parts.push(`<div style="margin-top:10px;">
+        <strong>3) Favorecer la reflexión y sentido</strong>
+        <p>Hay margen para fortalecer cómo aseguras que los estudiantes comprendan el sentido de lo aprendido. Sugerencias:</p>
+        <ul>
+          <li>Presenta objetivos y criterios al inicio y dedícale tiempo a conversaciones sobre ellos.</li>
+          <li>Usa preguntas metacognitivas al cierre: ¿Para qué sirve esto? ¿Cómo lo aplicarías?</li>
+          <li>Proporciona instrumentos de autoevaluación y momentos de revisión entre pares.</li>
+        </ul>
+        <p class="small-muted">Recurso: Diseña sesiones con cierre reflexivo de 10 minutos donde se formulen evidencias de aprendizaje.</p>
+      </div>`);
+    } else {
+      parts.push(`<div style="margin-top:10px;"><strong>3) Favorecer la reflexión y sentido</strong><p>Buen uso de estrategias reflexivas. Mantén la práctica de revisar criterios y promover autoevaluación.</p></div>`);
+    }
+
+    // Recursos generales
+    parts.push(`<div style="margin-top:12px;">
+      <strong>Recursos recomendados (texto, libro, video, tecnología)</strong>
+      <ul>
+        <li><strong>Texto breve:</strong> Artículos sobre enseñanza por competencias y aprendizaje activo (buscar en repositorios educativos locales).</li>
+        <li><strong>Libro:</strong> "Aprendizaje activo en el aula" (ediciones pedagógicas) — útil para estrategias prácticas por sesión.</li>
+        <li><strong>Video:</strong> Serie de micro-videos sobre prácticas activas y evaluación formativa (busca en YouTube: "prácticas activas en el aula", "evaluación formativa y retroalimentación").</li>
+        <li><strong>Tecnología:</strong> Utiliza herramientas sencillas offline/online como formularios para registro de evidencias, rúbricas compartidas y temporizadores para actividades guiadas.</li>
+      </ul>
+      <p class="small-muted">Sugerencia final: Elabora un plan de mejora con tres pequeñas acciones (una por pilar) para implementar en la próxima semana y evalúa su impacto.</p>
+    </div>`);
+
+    return parts.join('');
+  }
+
+  function closeGame(){
+    // Simple close: hide UI and show a closing note
+    if(confirm('¿Deseas cerrar el juego? Se volverá a la pantalla de inicio.')){
+      location.reload();
+    }
+  }
+
+  // Accessibility: allow Enter to start after name
+  el.teacherName.addEventListener('keypress', function(e){
+    if(e.key === 'Enter') el.btnStart.click();
+  });
+
+  // Initialize UI state
+  (function init(){
+    el.welcomeBox.style.display = 'none';
+    el.reader.style.display = 'none';
+    el.btnBeginEval.disabled = true;
+  })();
+
+})();
+</script>
+</body>
+</html>
