@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explicando el mundo físico</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f0f8ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        input, button {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        input {
+            width: 100%;
+            border: 2px solid #ddd;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .situacion-btn {
+            background-color: #9b59b6;
+            margin: 10px 0;
+            text-align: left;
+            padding: 15px;
+        }
+
+        .situacion-btn:hover {
+            background-color: #8e44ad;
+        }
+
+        .alternativa {
+            background-color: #e74c3c;
+            text-align: left;
+        }
+
+        .alternativa:hover {
+            background-color: #c0392b;
+        }
+
+        .feedback {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .correcto {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .incorrecto {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .progreso {
+            height: 25px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .barra-progreso {
+            height: 100%;
+            background-color: #2ecc71;
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .puntaje {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #3498db;
+        }
+
+        .oculto {
+            display: none;
+        }
+
+        .centrado {
+            text-align: center;
+        }
+
+        .motivacion {
+            font-style: italic;
+            color: #7f8c8d;
+            text-align: center;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Pantalla de inicio -->
+        <section id="pantalla-inicio">
+            <h1>Explicando el mundo físico</h1>
+            <p class="centrado">Ingresa tu nombre para comenzar la aventura científica</p>
+            <input type="text" id="nombre-estudiante" placeholder="Escribe tu nombre aquí">
+            <button id="btn-iniciar">Iniciar</button>
+        </section>
+
+        <!-- Pantalla de bienvenida -->
+        <section id="pantalla-bienvenida" class="oculto">
+            <h2>Iniciamos la aventura para conocer el mundo físico</h2>
+            <p class="motivacion">Hola, <span id="nombre-saludo"></span>. Comprender el mundo que nos rodea es el primer paso para convertirse en un científico.</p>
+            <p class="motivacion">Cada descubrimiento que hagas te acercará más a entender los misterios de los seres vivos, la materia, la energía y el universo.</p>
+            <p class="motivacion">¡Evalúa lo que sabes y conviértete en un experto explicando el mundo físico!</p>
+            <button id="btn-continuar">Continuar</button>
+        </section>
+
+        <!-- Selección de situaciones -->
+        <section id="seleccion-situaciones" class="oculto">
+            <h2>Selecciona una situación de aprendizaje</h2>
+            <p class="centrado">Elige uno de estos desafíos científicos para poner a prueba tus conocimientos:</p>
+            
+            <button class="situacion-btn" data-situacion="1">El ciclo del agua y su importancia</button>
+            <button class="situacion-btn" data-situacion="2">Biodiversidad en el ecosistema</button>
+            <button class="situacion-btn" data-situacion="3">Energías renovables y no renovables</button>
+            <button class="situacion-btn" data-situacion="4">El sistema solar y nuestro lugar en el universo</button>
+            <button class="situacion-btn" data-situacion="5">Propiedades de la materia y sus cambios</button>
+        </section>
+
+        <!-- Área de evaluación -->
+        <section id="pantalla-evaluacion" class="oculto">
+            <h2 id="titulo-situacion">Situación seleccionada</h2>
+            <div class="progreso">
+                <div class="barra-progreso" id="barra-progreso"></div>
+            </div>
+            <p class="puntaje">Puntaje: <span id="puntaje-actual">0</span></p>
+            
+            <div id="pregunta-container">
+                <h3 id="texto-pregunta">Texto de la pregunta</h3>
+                <div id="alternativas-container">
+                    <!-- Las alternativas se generarán dinámicamente -->
+                </div>
+            </div>
+            
+            <div id="feedback-container" class="oculto">
+                <div id="feedback-mensaje" class="feedback"></div>
+                <button id="btn-siguiente">Siguiente pregunta</button>
+            </div>
+        </section>
+
+        <!-- Resultados finales -->
+        <section id="pantalla-resultados" class="oculto">
+            <h2>¡Felicidades, <span id="nombre-final"></span>!</h2>
+            <p class="puntaje">Has completado la situación con un puntaje de: <span id="puntaje-final">0</span>/4</p>
+            
+            <div id="retroalimentacion-general">
+                <!-- La retroalimentación general se generará dinámicamente -->
+            </div>
+            
+            <button id="btn-volver">Volver a selección de situaciones</button>
+        </section>
+    </div>
+
+    <script>
+        // Variables globales
+        let nombreEstudiante = "";
+        let situacionActual = null;
+        let preguntaActual = 0;
+        let puntajeTotal = 0;
+        let respuestasCorrectas = 0;
+
+        // Datos del juego: situaciones y preguntas
+        const situaciones = [
+            {
+                id: 1,
+                titulo: "El ciclo del agua y su importancia",
+                descripcion: "El agua es un recurso esencial para la vida en nuestro planeta. Su ciclo continuo permite que este recurso se renueve y esté disponible para los seres vivos. Sin embargo, las actividades humanas están afectando este ciclo natural.",
+                preguntas: [
+                    {
+                        pregunta: "¿Cuál de los siguientes procesos del ciclo del agua es esencial para la formación de nubes?",
+                        alternativas: [
+                            "Evaporación",
+                            "Filtración",
+                            "Condensación"
+                        ],
+                        correcta: 2,
+                        retroalimentacion: {
+                            correcta: "¡Excelente! La condensación es el proceso por el cual el vapor de agua se convierte en líquido, formando las nubes.",
+                            incorrecta: "La respuesta correcta es la condensación. Este proceso ocurre cuando el vapor de agua se enfría y se convierte en gotitas líquidas que forman las nubes."
+                        }
+                    },
+                    {
+                        pregunta: "¿Cómo afecta la deforestación al ciclo del agua?",
+                        alternativas: [
+                            "Aumenta la evaporación",
+                            "Disminuye la infiltración del agua en el suelo",
+                            "Acelera la condensación"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Muy bien! La deforestación reduce la capacidad del suelo para absorber agua, lo que disminuye la infiltración y aumenta la escorrentía superficial.",
+                            incorrecta: "La respuesta correcta es que la deforestación disminuye la infiltración del agua en el suelo. Los árboles ayudan a que el agua penetre en la tierra, por lo que al eliminarlos, el agua corre superficialmente en lugar de infiltrarse."
+                        }
+                    },
+                    {
+                        pregunta: "¿Por qué es importante conservar las fuentes de agua dulce?",
+                        alternativas: [
+                            "Porque el agua salada no es útil para los seres humanos",
+                            "Porque el agua dulce representa menos del 3% del total de agua en la Tierra",
+                            "Porque el ciclo del agua se detendría sin conservación"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Correcto! Solo una pequeña fracción del agua en la Tierra es dulce y accesible, por lo que su conservación es crucial para la vida.",
+                            incorrecta: "La respuesta correcta es que el agua dulce representa menos del 3% del total de agua en la Tierra. Esta pequeña cantidad debe satisfacer las necesidades de todos los seres vivos, por lo que es esencial conservarla."
+                        }
+                    },
+                    {
+                        pregunta: "¿Qué acción humana tiene mayor impacto negativo en la calidad del agua?",
+                        alternativas: [
+                            "La construcción de presas",
+                            "La contaminación industrial y agrícola",
+                            "La extracción de agua subterránea"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Bien hecho! La contaminación por actividades industriales y agrícolas introduce sustancias tóxicas en los cuerpos de agua, afectando su calidad y la vida que depende de ellos.",
+                            incorrecta: "La respuesta correcta es la contaminación industrial y agrícola. Estos actividades liberan productos químicos, metales pesados y fertilizantes que contaminan el agua y dañan los ecosistemas acuáticos."
+                        }
+                    }
+                ]
+            },
+            {
+                id: 2,
+                titulo: "Biodiversidad en el ecosistema",
+                descripcion: "La biodiversidad se refiere a la variedad de vida en la Tierra, que incluye la diversidad de especies, genética y de ecosistemas. Esta diversidad es crucial para la estabilidad y resiliencia de los ecosistemas.",
+                preguntas: [
+                    {
+                        pregunta: "¿Qué es la biodiversidad?",
+                        alternativas: [
+                            "Solo la variedad de animales en un ecosistema",
+                            "La variedad de vida en todas sus formas y combinaciones",
+                            "Exclusivamente la diversidad genética dentro de una especie"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Excelente! La biodiversidad abarca la diversidad de especies, genética y de ecosistemas en nuestro planeta.",
+                            incorrecta: "La respuesta correcta es la variedad de vida en todas sus formas y combinaciones. La biodiversidad incluye no solo la diversidad de especies, sino también la diversidad genética y la variedad de ecosistemas."
+                        }
+                    },
+                    {
+                        pregunta: "¿Por qué es importante la biodiversidad para los ecosistemas?",
+                        alternativas: [
+                            "Porque hace que los ecosistemas sean más bellos",
+                            "Porque aumenta la resiliencia y estabilidad de los ecosistemas",
+                            "Porque atrae más turistas a las áreas naturales"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Muy bien! La biodiversidad permite que los ecosistemas se recuperen más fácilmente de perturbaciones y mantengan su funcionamiento.",
+                            incorrecta: "La respuesta correcta es que aumenta la resiliencia y estabilidad de los ecosistemas. Un ecosistema con mayor biodiversidad puede adaptarse mejor a cambios y recuperarse de perturbaciones naturales o humanas."
+                        }
+                    },
+                    {
+                        pregunta: "¿Cuál es la principal causa de la pérdida de biodiversidad en el mundo?",
+                        alternativas: [
+                            "La caza furtiva de animales",
+                            "La destrucción y fragmentación de hábitats",
+                            "El cambio climático natural"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Correcto! La transformación de ecosistemas naturales para agricultura, urbanización u otros usos humanos es la mayor amenaza para la biodiversidad.",
+                            incorrecta: "La respuesta correcta es la destrucción y fragmentación de hábitats. La conversión de áreas naturales para agricultura, ganadería, urbanización y otras actividades humanas es la principal causa de pérdida de biodiversidad a nivel global."
+                        }
+                    },
+                    {
+                        pregunta: "¿Cómo beneficia la biodiversidad a los seres humanos?",
+                        alternativas: [
+                            "Proporciona alimentos, medicinas y servicios ecosistémicos",
+                            "Solo tiene valor estético y recreativo",
+                            "Su beneficio principal es científico para estudiar nuevas especies"
+                        ],
+                        correcta: 0,
+                        retroalimentacion: {
+                            correcta: "¡Bien hecho! La biodiversidad nos provee de alimentos, medicinas, materiales y servicios esenciales como la polinización y purificación del agua.",
+                            incorrecta: "La respuesta correcta es que proporciona alimentos, medicinas y servicios ecosistémicos. La biodiversidad es fundamental para nuestra supervivencia y bienestar, ya que nos provee de recursos esenciales y servicios como la polinización, purificación del agua y regulación del clima."
+                        }
+                    }
+                ]
+            },
+            {
+                id: 3,
+                titulo: "Energías renovables y no renovables",
+                descripcion: "Las fuentes de energía se clasifican en renovables y no renovables según su capacidad de regeneración. Mientras las energías no renovables se agotan, las renovables se mantienen disponibles de forma continua.",
+                preguntas: [
+                    {
+                        pregunta: "¿Cuál de estas es una fuente de energía renovable?",
+                        alternativas: [
+                            "Petróleo",
+                            "Carbón mineral",
+                            "Energía solar"
+                        ],
+                        correcta: 2,
+                        retroalimentacion: {
+                            correcta: "¡Excelente! La energía solar es renovable porque proviene del sol, una fuente que no se agota a escala humana.",
+                            incorrecta: "La respuesta correcta es la energía solar. A diferencia del petróleo y el carbón, que son recursos finitos, la energía solar se considera renovable porque el sol continuará proporcionando energía por miles de millones de años."
+                        }
+                    },
+                    {
+                        pregunta: "¿Qué ventaja principal tienen las energías renovables sobre las no renovables?",
+                        alternativas: [
+                            "Son más baratas de producir siempre",
+                            "Son inagotables a escala humana y contaminan menos",
+                            "Son más eficientes en todos los casos"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Muy bien! Las energías renovables se regeneran naturalmente y generalmente tienen menor impacto ambiental que las fuentes no renovables.",
+                            incorrecta: "La respuesta correcta es que son inagotables a escala humana y contaminan menos. Mientras que los combustibles fósiles se agotarán eventualmente, las energías renovables como la solar y eólica están disponibles continuamente y generan menos emisiones contaminantes."
+                        }
+                    },
+                    {
+                        pregunta: "¿Por qué es importante diversificar las fuentes de energía?",
+                        alternativas: [
+                            "Para que los países puedan vender más energía al exterior",
+                            "Para aumentar la dependencia de combustibles fósiles",
+                            "Para garantizar suministro energético y reducir vulnerabilidades"
+                        ],
+                        correcta: 2,
+                        retroalimentacion: {
+                            correcta: "¡Correcto! La diversificación energética reduce la dependencia de una sola fuente, aumenta la seguridad energética y mitiga riesgos asociados con la volatilidad de precios o disponibilidad.",
+                            incorrecta: "La respuesta correcta es para garantizar suministro energético y reducir vulnerabilidades. Depender de una sola fuente de energía hace a un país vulnerable a crisis de suministro o fluctuaciones de precios. La diversificación permite mayor seguridad energética y estabilidad."
+                        }
+                    },
+                    {
+                        pregunta: "¿Cuál es un desafío actual de las energías renovables?",
+                        alternativas: [
+                            "Su disponibilidad intermitente (dependencia del sol, viento, etc.)",
+                            "Que son demasiado eficientes para la demanda actual",
+                            "Que producen más contaminación que los combustibles fósiles"
+                        ],
+                        correcta: 0,
+                        retroalimentacion: {
+                            correcta: "¡Bien hecho! La intermitencia de fuentes como la solar y eólica requiere el desarrollo de sistemas de almacenamiento de energía para garantizar suministro constante.",
+                            incorrecta: "La respuesta correcta es su disponibilidad intermitente. Fuentes como la solar y eólica dependen de condiciones naturales que varían, lo que requiere el desarrollo de tecnologías de almacenamiento y redes inteligentes para garantizar un suministro estable."
+                        }
+                    }
+                ]
+            },
+            {
+                id: 4,
+                titulo: "El sistema solar y nuestro lugar en el universo",
+                descripcion: "Nuestro sistema solar forma parte de una galaxia entre miles de millones en el universo. Comprender su estructura y dinámica nos ayuda a contextualizar nuestro lugar en el cosmos.",
+                preguntas: [
+                    {
+                        pregunta: "¿Qué es el sistema solar?",
+                        alternativas: [
+                            "Solo el sol y los planetas",
+                            "El sol y todos los cuerpos celestes que giran a su alrededor",
+                            "Todos los planetas del universo"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Excelente! El sistema solar incluye el sol, planetas, lunas, asteroides, cometas y otros cuerpos que orbitan alrededor del sol.",
+                            incorrecta: "La respuesta correcta es el sol y todos los cuerpos celestes que giran a su alrededor. El sistema solar incluye no solo el sol y los planetas, sino también sus lunas, asteroides, cometas y otros objetos que orbitan alrededor del sol."
+                        }
+                    },
+                    {
+                        pregunta: "¿Qué característica distingue a los planetas terrestres (rocosos) de los gigantes gaseosos?",
+                        alternativas: [
+                            "Los terrestres son más grandes",
+                            "Los terrestres tienen superficies sólidas y mayor densidad",
+                            "Los gigantes gaseosos están más cerca del sol"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Muy bien! Los planetas terrestres (Mercurio, Venus, Tierra, Marte) tienen superficies sólidas y mayor densidad, mientras que los gigantes gaseosos (Júpiter, Saturno, Urano, Neptuno) son principalmente grandes masas de gas.",
+                            incorrecta: "La respuesta correcta es que los terrestres tienen superficies sólidas y mayor densidad. Los planetas rocosos (Mercurio, Venus, Tierra, Marte) se caracterizan por tener superficies sólidas y composiciones densas, mientras que los gigantes gaseosos están compuestos principalmente de hidrógeno y helio."
+                        }
+                    },
+                    {
+                        pregunta: "¿Por qué existe vida en la Tierra y no en otros planetas del sistema solar?",
+                        alternativas: [
+                            "Porque la Tierra es el único planeta con agua",
+                            "Porque la Tierra tiene condiciones únicas: temperatura adecuada, agua líquida y atmósfera protectora",
+                            "Porque los otros planetas son demasiado viejos"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Correcto! La combinación de distancia adecuada al sol, presencia de agua líquida, atmósfera con composición apropiada y otros factores hacen posible la vida en la Tierra.",
+                            incorrecta: "La respuesta correcta es porque la Tierra tiene condiciones únicas: temperatura adecuada, agua líquida y atmósfera protectora. La posición de la Tierra en la 'zona habitable' del sistema solar, junto con su tamaño, composición atmosférica y campo magnético, crean las condiciones necesarias para la vida."
+                        }
+                    },
+                    {
+                        pregunta: "¿Cuál es la importancia de estudiar el sistema solar y el universo?",
+                        alternativas: [
+                            "Satisfacer simple curiosidad sobre el espacio",
+                            "Comprender el origen y evolución del universo y nuestro lugar en él",
+                            "Solo para encontrar nuevos planetas para colonizar"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Bien hecho! El estudio del sistema solar y el universo nos ayuda a comprender nuestros orígenes, las leyes físicas que gobiernan el cosmos y nuestro lugar en el universo.",
+                            incorrecta: "La respuesta correcta es comprender el origen y evolución del universo y nuestro lugar en él. Estudiar el sistema solar y el universo nos permite entender cómo se formó la Tierra, cómo surgió la vida, y contextualizar nuestra existencia en el vasto cosmos."
+                        }
+                    }
+                ]
+            },
+            {
+                id: 5,
+                titulo: "Propiedades de la materia y sus cambios",
+                descripcion: "Todo lo que nos rodea está formado por materia, que presenta propiedades características y puede experimentar cambios físicos y químicos. Comprender estos conceptos es fundamental para explicar los fenómenos naturales.",
+                preguntas: [
+                    {
+                        pregunta: "¿Qué es la materia?",
+                        alternativas: [
+                            "Solo lo que podemos ver y tocar",
+                            "Todo lo que ocupa un lugar en el espacio y tiene masa",
+                            "Exclusivamente los elementos químicos puros"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Excelente! La materia es todo aquello que ocupa un espacio y tiene masa, incluyendo cosas que no podemos ver como el aire.",
+                            incorrecta: "La respuesta correcta es todo lo que ocupa un lugar en el espacio y tiene masa. La materia incluye no solo objetos sólidos visibles, sino también líquidos, gases e incluso partículas subatómicas, siempre que tengan masa y volumen."
+                        }
+                    },
+                    {
+                        pregunta: "¿Cuál es la diferencia entre un cambio físico y un cambio químico?",
+                        alternativas: [
+                            "En el cambio físico se altera la composición, en el químico no",
+                            "En el cambio físico no se altera la composición, en el químico sí",
+                            "No hay diferencia, son lo mismo"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Muy bien! En un cambio físico (como doblar un metal) la sustancia mantiene su composición, mientras que en un cambio químico (como quemar papel) se forman nuevas sustancias.",
+                            incorrecta: "La respuesta correcta es que en el cambio físico no se altera la composición, en el químico sí. Los cambios físicos afectan la forma o estado de la materia sin alterar su composición química, mientras que los cambios químicos producen nuevas sustancias con propiedades diferentes."
+                        }
+                    },
+                    {
+                        pregunta: "¿Qué ocurre durante la evaporación?",
+                        alternativas: [
+                            "Un líquido se convierte en gas",
+                            "Un gas se convierte en líquido",
+                            "Un sólido se convierte directamente en gas"
+                        ],
+                        correcta: 0,
+                        retroalimentacion: {
+                            correcta: "¡Correcto! La evaporación es el proceso por el cual un líquido se transforma en gas, generalmente por aumento de temperatura.",
+                            incorrecta: "La respuesta correcta es un líquido se convierte en gas. La evaporación es un cambio de estado físico donde las moléculas de un líquido ganan suficiente energía para pasar al estado gaseoso. Esto ocurre, por ejemplo, cuando el agua se convierte en vapor."
+                        }
+                    },
+                    {
+                        pregunta: "¿Por qué es importante entender las propiedades de la materia y sus cambios?",
+                        alternativas: [
+                            "Solo para aprobar el curso de ciencia",
+                            "Para comprender y explicar los fenómenos naturales y procesos tecnológicos",
+                            "Para memorizar datos sin aplicación práctica"
+                        ],
+                        correcta: 1,
+                        retroalimentacion: {
+                            correcta: "¡Bien hecho! Comprender la materia y sus transformaciones nos permite explicar fenómenos naturales, desarrollar nuevos materiales y tecnologías, y entender procesos cotidianos como la cocción de alimentos o la digestión.",
+                            incorrecta: "La respuesta correcta es para comprender y explicar los fenómenos naturales y procesos tecnológicos. El estudio de la materia y sus cambios nos ayuda a entender desde procesos biológicos en nuestro cuerpo hasta fenómenos atmosféricos, y es fundamental para el desarrollo de nuevos materiales, medicamentos y tecnologías."
+                        }
+                    }
+                ]
+            }
+        ];
+
+        // Elementos del DOM
+        const pantallaInicio = document.getElementById('pantalla-inicio');
+        const pantallaBienvenida = document.getElementById('pantalla-bienvenida');
+        const seleccionSituaciones = document.getElementById('seleccion-situaciones');
+        const pantallaEvaluacion = document.getElementById('pantalla-evaluacion');
+        const pantallaResultados = document.getElementById('pantalla-resultados');
+
+        const nombreEstudianteInput = document.getElementById('nombre-estudiante');
+        const nombreSaludo = document.getElementById('nombre-saludo');
+        const nombreFinal = document.getElementById('nombre-final');
+
+        const btnIniciar = document.getElementById('btn-iniciar');
+        const btnContinuar = document.getElementById('btn-continuar');
+        const situacionButtons = document.querySelectorAll('.situacion-btn');
+        const btnSiguiente = document.getElementById('btn-siguiente');
+        const btnVolver = document.getElementById('btn-volver');
+
+        const tituloSituacion = document.getElementById('titulo-situacion');
+        const textoPregunta = document.getElementById('texto-pregunta');
+        const alternativasContainer = document.getElementById('alternativas-container');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackMensaje = document.getElementById('feedback-mensaje');
+        const barraProgreso = document.getElementById('barra-progreso');
+        const puntajeActual = document.getElementById('puntaje-actual');
+        const puntajeFinal = document.getElementById('puntaje-final');
+        const retroalimentacionGeneral = document.getElementById('retroalimentacion-general');
+
+        // Event Listeners
+        btnIniciar.addEventListener('click', iniciarJuego);
+        btnContinuar.addEventListener('click', () => mostrarPantalla(seleccionSituaciones));
+        btnSiguiente.addEventListener('click', siguientePregunta);
+        btnVolver.addEventListener('click', volverASeleccion);
+
+        situacionButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const situacionId = parseInt(e.target.getAttribute('data-situacion'));
+                comenzarEvaluacion(situacionId);
+            });
+        });
+
+        // Funciones del juego
+        function iniciarJuego() {
+            nombreEstudiante = nombreEstudianteInput.value.trim();
+            
+            if (nombreEstudiante === "") {
+                alert("Por favor, ingresa tu nombre para continuar.");
+                return;
+            }
+            
+            nombreSaludo.textContent = nombreEstudiante;
+            mostrarPantalla(pantallaBienvenida);
+        }
+
+        function mostrarPantalla(pantalla) {
+            // Ocultar todas las pantallas
+            pantallaInicio.classList.add('oculto');
+            pantallaBienvenida.classList.add('oculto');
+            seleccionSituaciones.classList.add('oculto');
+            pantallaEvaluacion.classList.add('oculto');
+            pantallaResultados.classList.add('oculto');
+            
+            // Mostrar la pantalla solicitada
+            pantalla.classList.remove('oculto');
+        }
+
+        function comenzarEvaluacion(situacionId) {
+            situacionActual = situaciones.find(s => s.id === situacionId);
+            preguntaActual = 0;
+            puntajeTotal = 0;
+            respuestasCorrectas = 0;
+            
+            if (!situacionActual) {
+                alert("Error: Situación no encontrada.");
+                return;
+            }
+            
+            tituloSituacion.textContent = situacionActual.titulo;
+            puntajeActual.textContent = "0";
+            barraProgreso.style.width = "0%";
+            
+            mostrarPantalla(pantallaEvaluacion);
+            mostrarPregunta();
+        }
+
+        function mostrarPregunta() {
+            if (preguntaActual >= situacionActual.preguntas.length) {
+                mostrarResultados();
+                return;
+            }
+            
+            const pregunta = situacionActual.preguntas[preguntaActual];
+            textoPregunta.textContent = pregunta.pregunta;
+            
+            // Limpiar alternativas anteriores
+            alternativasContainer.innerHTML = "";
+            feedbackContainer.classList.add('oculto');
+            
+            // Crear botones de alternativas
+            pregunta.alternativas.forEach((alternativa, index) => {
+                const button = document.createElement('button');
+                button.textContent = alternativa;
+                button.classList.add('alternativa');
+                button.addEventListener('click', () => verificarRespuesta(index));
+                alternativasContainer.appendChild(button);
+            });
+            
+            // Actualizar barra de progreso
+            const progreso = (preguntaActual / situacionActual.preguntas.length) * 100;
+            barraProgreso.style.width = `${progreso}%`;
+        }
+
+        function verificarRespuesta(indiceSeleccionado) {
+            const pregunta = situacionActual.preguntas[preguntaActual];
+            const esCorrecta = indiceSeleccionado === pregunta.correcta;
+            
+            if (esCorrecta) {
+                puntajeTotal += 10;
+                respuestasCorrectas++;
+                puntajeActual.textContent = puntajeTotal;
+                feedbackMensaje.textContent = pregunta.retroalimentacion.correcta;
+                feedbackMensaje.className = "feedback correcto";
+            } else {
+                feedbackMensaje.textContent = pregunta.retroalimentacion.incorrecta;
+                feedbackMensaje.className = "feedback incorrecto";
+            }
+            
+            feedbackContainer.classList.remove('oculto');
+        }
+
+        function siguientePregunta() {
+            preguntaActual++;
+            mostrarPregunta();
+        }
+
+        function mostrarResultados() {
+            nombreFinal.textContent = nombreEstudiante;
+            puntajeFinal.textContent = puntajeTotal;
+            
+            // Generar retroalimentación general según el puntaje
+            retroalimentacionGeneral.innerHTML = "";
+            const tituloRetro = document.createElement('h3');
+            const mensajeRetro = document.createElement('p');
+            const sugerencias = document.createElement('div');
+            
+            if (puntajeTotal >= 30) {
+                tituloRetro.textContent = "¡Excelente trabajo!";
+                mensajeRetro.textContent = "Demuestras un gran entendimiento de los conceptos científicos y su aplicación para explicar el mundo físico.";
+                sugerencias.innerHTML = "<p>Sugerencias para seguir mejorando:</p><ul><li>Profundiza en los temas que más te interesen</li><li>Intenta explicar estos conceptos a otras personas</li><li>Investiga sobre aplicaciones tecnológicas de estos conocimientos</li></ul>";
+            } else if (puntajeTotal >= 20) {
+                tituloRetro.textContent = "¡Buen trabajo!";
+                mensajeRetro.textContent = "Tienes una base sólida de conocimientos científicos, pero hay aspectos que puedes reforzar.";
+                sugerencias.innerHTML = "<p>Sugerencias para mejorar:</p><ul><li>Repasa los conceptos donde tuviste dificultades</li><li>Relaciona los conocimientos científicos con situaciones cotidianas</li><li>Practica evaluando implicancias de descubrimientos científicos</li></ul>";
+            } else {
+                tituloRetro.textContent = "¡Sigue practicando!";
+                mensajeRetro.textContent = "Todos los científicos comenzaron con curiosidad y perseverancia. Sigue explorando y aprendiendo.";
+                sugerencias.innerHTML = "<p>Sugerencias para mejorar:</p><ul><li>Repasa los conceptos básicos de cada tema</li><li>Busca ejemplos concretos de los fenómenos científicos</li><li>Pregunta a tu profesor sobre las dudas que tengas</li><li>No te rindas, la ciencia requiere práctica</li></ul>";
+            }
+            
+            retroalimentacionGeneral.appendChild(tituloRetro);
+            retroalimentacionGeneral.appendChild(mensajeRetro);
+            retroalimentacionGeneral.appendChild(sugerencias);
+            
+            mostrarPantalla(pantallaResultados);
+        }
+
+        function volverASeleccion() {
+            mostrarPantalla(seleccionSituaciones);
+        }
+    </script>
+</body>
+</html>
